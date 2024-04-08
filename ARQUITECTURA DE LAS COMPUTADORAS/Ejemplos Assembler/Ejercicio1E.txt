@@ -1,0 +1,30 @@
+;1. Mediante el software de simulación http://schweigi.github.io/assembler-simulator/
+;a) Programa que que sume dos datos
+;b) Implementar un programa que realice la suma y la resta con dos datos almacenado en memoria.
+;c) Escribir un programa que compare dos números. Si son iguales el programa debe finalizar y si son distintos los debe sumar.
+;d) Un programa que lea un dato e indique si es par o impar.
+;e) Programa que indique el funcionamiento de el stack. (pila)
+
+
+;e)
+
+	jmp start
+cadena: 
+	db "Cadena"
+	db 0
+start:
+	mov C, cadena
+	mov D, 237
+loop:
+	push [C]
+	inc C
+	mov B, [C]
+	cmp B, 0x00
+	jnz loop
+printFromStack:
+	pop A
+	mov [D], A
+	dec D
+	cmp D, 231
+	jnz printFromStack
+	hlt

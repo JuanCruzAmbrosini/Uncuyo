@@ -1,0 +1,21 @@
+;Escribir un programa que realice las siguientes tareas:
+;● Escriba un número cualquiera en la posición de memoria 0x60.
+;● Escriba un número cualquiera en la posición de memoria 0x61.
+;● Realice la división por restas sucesivas del número escrito en la ;posición 0x60
+;dividido el número escrito en la posición 0x61. Escriba el cociente ;en la posición de
+;memoria 0x62 y el resto en la posición de memoria 0x63.
+
+mov [0x60], 122 
+mov [0x61], 24
+mov A, [0x60]
+
+loop:
+	sub A,[0x61]
+	jc end
+	inc B
+	jmp loop
+end:
+	add A,[0x61]
+	mov [0x63],A
+	mov [0x62],B
+	hlt
