@@ -18,18 +18,18 @@
 	jmp start
 
 start: 
-	mov [0x52], 0x97
-	mov [0x51], 0x83
+	mov [0x62], 0xFF
+	mov [0x61], 0xFF
 
-	mov [0x62], 0xF2
-	mov [0x61], 0x83
+	mov [0x72], 0xFF
+	mov [0x71], 0xFF
 
 sum:
-	mov A, [0x52]
-	mov B, [0x62]
+	mov A, [0x62]
+	mov B, [0x72]
 	call sumLessSign
-	mov A, [0x51]
-	mov B, [0x61]
+	mov A, [0x61]
+	mov B, [0x71]
 	call sumMoreSign
 	call end
 
@@ -38,31 +38,29 @@ sumLessSign:
 	jc .writeCarryLs
 	jnc .writeNotCarryLs
 .writeCarryLs:
-	mov [0x72], A
+	mov [0x82], A
 	mov C, 0x01
 	ret
 .writeNotCarryLs:
-	mov [0x72], A
+	mov [0x82], A
 	ret
 	
 sumMoreSign:
-	add A,C
 	add A,B
 	jc .writeCarryMs
 	jnc .writeNotCarryMs
 .writeCarryMs:
-	mov C, 0x01
-	mov [0x71], A
-	mov [0x70], C
+	mov D, 0x01
+	add A,C
+	mov [0x81], A
+	mov [0x80], D
 	ret
 .writeNotCarryMs:
-	mov C, 0x00
-	mov [0x71], A
-	mov C, [0x70]
+	mov D, 0x00
+	add A,C
+	mov [0x81], A
+	mov D, [0x80]
 	ret
-
-end: hlt
-
 
 
 
