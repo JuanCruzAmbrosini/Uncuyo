@@ -1,0 +1,40 @@
+;a) Cargar números en las direcciones 60,61,62 y 63.
+        ;Restarle una constante (por ejemplo, el hexadecimal 7)
+        ;Transferir el resultado a las direcciones 70,71, 72 y 73
+;b) Cargar N números (POR EJEMPLO 16) a partir de la dirección 60.
+        ;Terminar el ingreso de números, si ingresa un dato igual a 
+        ;cero.
+;c) Cargar N números a partir de la dirección 60.
+        ;Restarle una constante (por ejemplo, el hexadecimal 5)
+        ;Terminar el ingreso de números, si el resultado de la resta 
+        ;es CERO.
+;d) Cargar la línea de memoria RAM desde la memoria 40 a la 4F con 16 
+        ;DATOS y transferirlos a partir de la dirección de memoria 60
+;e) Ejemplo de Hello World en español. Cambiar la salida por: Hola 
+        ;Mundo. ¿Qué tal? 
+
+;c)
+
+
+mov [60], 35
+mov [61], 63
+mov [62], 83
+mov [63], 71
+mov [64], 5
+mov [65], 23
+mov [66], 23
+mov [67], 0
+mov B, 60
+mov D, 8
+
+loop: 
+	mov A , [B]
+	cmp A, 5
+	jz end
+	inc B
+	dec D
+	cmp D , 0
+	jz end
+	jmp loop
+end:
+	hlt
