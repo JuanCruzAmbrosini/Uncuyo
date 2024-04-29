@@ -11,7 +11,11 @@
 
 Algoritmo Ejercicio4
 	
-	Definir limiteInferior, limiteSuperior, num Como Real;
+	Definir limiteInferior, limiteSuperior, num, sum, contadorNoIntervalo Como Real;
+	Definir igualLimiteIntervalo Como Logico;
+	
+	igualLimiteIntervalo = Falso;
+	num = 1;
 	
 	Repetir
 		
@@ -23,10 +27,47 @@ Algoritmo Ejercicio4
 		
 		si limiteInferior > limiteSuperior
 			
-			Escribir "Error: el límite superior del intervalo es más pequeño que el límite inferior."
+			Escribir "Error: el límite superior del intervalo es más pequeño que el límite inferior.";
 			
 		FinSi
 		
 	Mientras Que limiteInferior > limiteSuperior
+	Escribir "----------------------------------------------------------------------"
+	Escribir "Ingrese un valor: (Para terminar, ingrese 0)";
+	
+	Mientras num <> 0 Hacer
+		
+		Leer num;
+		
+		si num < limiteSuperior y num > limiteInferior
+			
+			sum = sum + num;
+			
+		SiNo si num <> 0
+				
+				contadorNoIntervalo = contadorNoIntervalo + 1;
+				
+			FinSi
+		FinSi
+		
+		si num == limiteInferior o num == limiteSuperior
+			
+			igualLimiteIntervalo = Verdadero;
+			
+		FinSi
+		
+	FinMientras
+	
+	Escribir "La suma de los números dentro del el intervalo es de: " sum;
+	Escribir "Los cantidad de números que están fuera del intervalo es: " contadorNoIntervalo;
+	si igualLimiteIntervalo Entonces
+		
+		Escribir "Se ha ingresado uno o más valores iguales a los límites del intervalo.";
+		
+	SiNo
+		
+		Escribir "No se han ingresado números iguales a los extremos del intervalo.";
+		
+	FinSi
 	
 FinAlgoritmo
