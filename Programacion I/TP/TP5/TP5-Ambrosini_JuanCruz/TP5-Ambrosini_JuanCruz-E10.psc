@@ -31,7 +31,7 @@ Algoritmo Ejercicio10
 	
 	Mientras contadorPartidasA < 3 y contadorPartidasB < 3 Hacer
 		
-		Hacer
+		Repetir
 			
 			Escribir "Jugador A, por favor, seleccione una opción: ";
 			Escribir "1_ Piedra";
@@ -47,7 +47,7 @@ Algoritmo Ejercicio10
 			
 		Mientras Que opcionA <> 1 y opcionA <> 2 y opcionA <> 3
 		
-		Hacer
+		Repetir
 			
 			Escribir "Jugador B, por favor, seleccione una opción: ";
 			Escribir "1_ Piedra";
@@ -61,7 +61,7 @@ Algoritmo Ejercicio10
 				
 			FinSi
 			
-		Mientras Que opcionA <> 1 y opcionA <> 2 y opcionA <> 3
+		Mientras Que opcionB <> 1 y opcionB <> 2 y opcionB <> 3
 		
 		si opcionA == opcionB Entonces
 			

@@ -128,6 +128,6 @@ Algoritmo Ejercicio3
 		
 	Mientras Que continuar <> 'y'
 	
-	Escribir "Gracias por utilizar nuestros seervicios."
+	Escribir "Gracias por utilizar nuestros servicios."
 	
 FinAlgoritmo
