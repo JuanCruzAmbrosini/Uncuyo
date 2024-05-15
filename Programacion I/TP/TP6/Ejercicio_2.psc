@@ -11,17 +11,61 @@
 Algoritmo Ejercicio_2
 	
 	Definir numeroUsuario, numeroInvertido, seleccionUsuario Como Entero;
-	Definir esCapicua, esPrimo Como Logico;
+	Definir esCapicua, esPrimo, digitosImpares Como Logico;
 	
-	numeroUsuario = 344;
+	Escribir "Por favor, ingrese un número a analizar: ";
+	Leer numeroUsuario;
 	
-	esCapicua = verificarCapicua (numeroUsuario); 
+	seleccionUsuario = menu;
 	
-	Escribir esCapicua;
+	Segun seleccionUsuario Hacer
+		
+		1:
+			esCapicua = verificarCapicua(numeroUsuario);
+			
+			si esCapicua Entonces
+				
+				Escribir "¡El número ingresado es capicúa!";
+				
+			SiNo
+				
+				Escribir "El número ingresado no es capicúa.";
+				
+			FinSi
+			
+		2:
+			
+			esPrimo = verificarPrimo(numeroUsuario);
+			
+			si esPrimo Entonces
+				
+				Escribir "¡El número ingresado es primo!";
+				
+			SiNo
+				
+				Escribir "El número ingresado no es primo.";
+				
+			FinSi
+			
+		3:
+			
+			digitosImpares = verificarDigitos(numeroUsuario);
+			
+			si digitosImpares Entonces
+				
+				Escribir "¡El número ingresado tiene todos sus dígitos impares!";
+				
+			SiNo
+				
+				Escribir "El número ingresado no tiene todos sus dígitos impares.";
+				
+			FinSi
+		
+	FinSegun
 	
 FinAlgoritmo
 
-Funcion  seleccionUsuario = menu ()
+Funcion  seleccionUsuario = menu
 	
 	Definir seleccionUsuario Como Entero;
 	
@@ -30,7 +74,19 @@ Funcion  seleccionUsuario = menu ()
 	Escribir "2. Verificar si el número es primo.";
 	Escribir "3. Verificar si todas sus cifras son impares.";
 	
-	Leer seleccionUsuario;
+	Repetir
+		
+		Leer seleccionUsuario;
+		
+		si seleccionUsuario <> 1 y seleccionUsuario <> 2 y seleccionUsuario <> 3 Entonces
+			
+			Escribir "Por favor, ingrese una opción válida."
+			
+		FinSi
+		
+	Mientras Que seleccionUsuario <> 1 y seleccionUsuario <> 2 y seleccionUsuario <> 3 
+	
+
 	
 FinFuncion
 
@@ -42,7 +98,7 @@ Funcion esCapicua = verificarCapicua (numeroUsuario)
 	
 	numeroInvertido = invertirNumero (numeroUsuario);
 	
-	si numeroInvertido == numeroUsuario Entonces
+	si abs(numeroInvertido) == abs(numeroUsuario) Entonces
 		
 		esCapicua = Verdadero
 		
@@ -57,14 +113,14 @@ Funcion numeroInvertido = invertirNumero (numeroUsuario)
 	contador = 0;
 	numeroAuxiliar = numeroUsuario;
 	
-	Hacer
+	Repetir
 		
 		numeroAuxiliar = trunc(numeroAuxiliar/10);
 		contador = contador + 1;
 		
 	Mientras Que numeroAuxiliar > 0 
 	
-	Hacer
+	Repetir
 		
 		proximaCifra = numeroUsuario % 10;
 		numeroUsuario = trunc(numeroUsuario/10)
@@ -77,6 +133,69 @@ FinFuncion
 
 Funcion esPrimo = verificarPrimo (numeroUsuario)
 	
-	esPrimo = Verdadero
+	Definir numeroAuxiliar Como Entero;
 	
-	Hacer
+	numeroAuxiliar = numeroUsuario - 1;
+	esPrimo = Verdadero;
+	
+	Repetir
+		
+		si abs(numeroUsuario) > 1 Entonces
+			
+			si numeroUsuario % numeroAuxiliar = 0 y numeroAuxiliar <> 1 o numeroUsuario = 0 Entonces
+				
+				esPrimo = Falso;
+				
+			FinSi
+			
+		SiNo
+			
+			esPrimo = Falso;
+			
+		FinSi
+		
+		numeroAuxiliar = numeroAuxiliar - 1;
+		
+	Mientras Que numeroAuxiliar > 1 y esPrimo 
+	
+FinFuncion
+
+Funcion digitosImpares = verificarDigitos (numeroUsuario)
+	
+	Definir proximaCifra Como Entero
+	digitosImpares = Verdadero
+	
+	Repetir
+		
+		proximaCifra = numeroUsuario % 10;
+		numeroUsuario = trunc(numeroUsuario/10);
+		
+		si proximaCifra % 2 == 0 Entonces
+			
+			digitosImpares = Falso
+			
+		FinSi
+		
+	Mientras Que numeroUsuario > 0
+	
+FinFuncion
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
