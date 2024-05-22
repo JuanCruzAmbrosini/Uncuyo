@@ -13,10 +13,40 @@
 // xxxxx
 // xxxxxx
 // xxxxxxx
+
 /// Datos de entrada: No presenta datos de entrada.
 /// Datos de salida: 10 Triángulos hechos por asteriscos o x 
+
 Algoritmo sin_titulo
-	Leer lista_de_variables
-	Según{expresio} Hacer
-	FinSegún
+	
+	Para i = 1 Hasta 10 Con Paso 1 Hacer
+		
+		si i % 2 == 0 Entonces
+			
+			dibujarTriangulo(7, 'x');
+			
+		SiNo
+			
+			dibujarTriangulo(6, '*');
+			
+		FinSi
+		
+	FinPara
+	
 FinAlgoritmo
+
+SubProceso dibujarTriangulo (cantidadRenglones, dibujo)
+	
+	Para i = 1 Hasta cantidadRenglones Hacer
+		
+		Escribir ""
+		
+		Para j = 1 Hasta i Hacer
+			
+			Escribir dibujo Sin Saltar;
+			
+		FinPara
+		
+	FinPara
+	
+FinSubProceso
