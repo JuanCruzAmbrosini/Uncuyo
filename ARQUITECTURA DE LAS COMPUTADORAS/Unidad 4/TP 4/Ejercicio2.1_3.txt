@@ -1,0 +1,74 @@
+void setup()
+{
+  pinMode(7, OUTPUT);
+  pinMode(2, INPUT);
+  attachInterrupt(0,blinking1,HIGH);
+  pinMode(12, OUTPUT);
+  pinMode(3, INPUT);
+  attachInterrupt(1,blinking2,HIGH);
+}
+
+void loop()
+{
+  
+}
+void blinking1(){
+  
+  for(int i = 1; i = 20; i++){
+  
+   digitalWrite(7,HIGH);
+   
+   for(int j = 1; j = 5; j++){
+   
+     delayMicroseconds(10000);
+       
+    }
+    
+    digitalWrite(7,LOW);
+    
+      
+  for(int k = 1; k = 5; k++){
+   
+     delayMicroseconds(10000);
+       
+    } 
+  }
+  
+  digitalWrite(7,HIGH);
+  for(int j = 1; j = 10; j++){
+   
+     delayMicroseconds(10000);
+       
+    }
+  digitalWrite(7,LOW);
+}
+void blinking2(){
+  
+  for(int i = 1; i = 20; i++){
+  
+   digitalWrite(12,HIGH);
+   
+   for(int j = 1; j = 5; j++){
+   
+     delayMicroseconds(10000);
+       
+    }
+    
+    digitalWrite(12,LOW);
+    
+      
+  for(int k = 1; k = 5; k++){
+   
+     delayMicroseconds(10000);
+       
+    } 
+  }
+  
+  digitalWrite(12,HIGH);
+  for(int j = 1; j = 10; j++){
+   
+     delayMicroseconds(10000);
+       
+    }
+  digitalWrite(12,LOW);
+}
