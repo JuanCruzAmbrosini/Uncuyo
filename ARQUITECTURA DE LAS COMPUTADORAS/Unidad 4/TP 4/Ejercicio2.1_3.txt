@@ -14,11 +14,11 @@ void loop()
 }
 void blinking1(){
   
-  for(int i = 1; i = 20; i++){
+  for(int i = 1; i <= 40; i++){
   
    digitalWrite(7,HIGH);
    
-   for(int j = 1; j = 5; j++){
+   for(int j = 1; j <= 5; j++){
    
      delayMicroseconds(10000);
        
@@ -27,7 +27,7 @@ void blinking1(){
     digitalWrite(7,LOW);
     
       
-  for(int k = 1; k = 5; k++){
+  for(int k = 1; k <= 5; k++){
    
      delayMicroseconds(10000);
        
@@ -35,7 +35,7 @@ void blinking1(){
   }
   
   digitalWrite(7,HIGH);
-  for(int j = 1; j = 10; j++){
+  for(int j = 1; j <= 100; j++){
    
      delayMicroseconds(10000);
        
@@ -44,11 +44,11 @@ void blinking1(){
 }
 void blinking2(){
   
-  for(int i = 1; i = 20; i++){
+  for(int i = 1; i <= 40; i++){
   
    digitalWrite(12,HIGH);
    
-   for(int j = 1; j = 5; j++){
+   for(int j = 1; j <= 5; j++){
    
      delayMicroseconds(10000);
        
@@ -57,7 +57,7 @@ void blinking2(){
     digitalWrite(12,LOW);
     
       
-  for(int k = 1; k = 5; k++){
+  for(int k = 1; k <= 5; k++){
    
      delayMicroseconds(10000);
        
@@ -65,7 +65,7 @@ void blinking2(){
   }
   
   digitalWrite(12,HIGH);
-  for(int j = 1; j = 10; j++){
+  for(int j = 1; j <= 100; j++){
    
      delayMicroseconds(10000);
        
