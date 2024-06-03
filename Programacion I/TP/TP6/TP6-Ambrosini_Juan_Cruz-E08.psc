@@ -104,7 +104,7 @@ Funcion variableLogica = definidorVariableLogica (mensaje, opcion1, opcion2)
 			
 		SiNo si selector <> 2 Entonces
 				
-				Escribir "ERROR: Inngrese una opción válida.";
+				Escribir "ERROR: Ingrese una opción válida.";
 				
 			FinSi
 		FinSi

@@ -45,7 +45,7 @@ Funcion sumaDivisores = calcularSumaDivisores (numeroUsuario)
 	FinPara
 	
 FinFuncion
-
+///------------------------------------------------------------------------------------------------------------------
 Funcion numeroIngresado = ingresarNumeroMayorQueUno (mensaje)
 	
 	Definir numeroIngresado Como Entero;
