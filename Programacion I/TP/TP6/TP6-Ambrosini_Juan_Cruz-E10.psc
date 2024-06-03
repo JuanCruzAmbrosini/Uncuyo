@@ -1,4 +1,3 @@
-Algoritmo sin_titulo
 	//Se desea calcular la cantidad de latas de pintura necesarias del mismo color para pintar las paredes de
 	//todas las habitaciones de una casa. Se conoce la siguiente información: Las puertas son de 0.75 x 2.00
 	//mts (ancho x alto) y las ventanas son de 1.20 x 1.50 mts. La pintura tiene las siguientes características:
@@ -205,4 +204,3 @@ Funcion numeroTruncado = techo (numeroATruncar)
 	FinSi
 	
 FinFuncion
-FinAlgoritmo
