@@ -48,7 +48,7 @@ Algoritmo Ejercicio_8
 				5: 
 					mostrarDiagonalSecundaria(matriz,ordenMatriz)
 				6: 
-					mostrarBorde(matriz, ordenMatriz,ordenMatriz)
+					mostrarContorno(matriz, ordenMatriz)
 				7: 
 					salida = elegirSalida
 				
@@ -192,31 +192,32 @@ SubProceso mostrarDiagonalSecundaria (matriz, orden)
 	
 FinSubProceso
 ///----------------------------------------------------------------------------------------------------------
-SubProceso mostrarBorde (matriz, fila, columna)
+SubAlgoritmo mostrarContorno(matriz, orden)
 	
-	Definir i, j Como Entero;
+	Definir i, j Como Entero
 	
-	Para i = 0 Hasta fila - 1 Con Paso 1 Hacer
-		
-		Para j = 0 Hasta columna - 1  Con Paso 1 Hacer
+	para i desde 0 hasta orden - 1 Hacer
+		Escribir Sin Saltar "|"
+		para j desde 0 Hasta orden - 1 Hacer
 			
-			si i = 1 o i = fila o j = columna o j = 1
-				
-				Escribir Sin Saltar "| " matriz[i,j] " |";
-				
+			si i = 0 o i = orden-1 Entonces
+				Escribir Sin Saltar matriz(i, j) " "
 			SiNo
-				
-				Escribir Sin Saltar "| 0 |";
-				
+				si j = orden-1 o j = 0 Entonces
+					
+					Escribir Sin Saltar matriz(i, j) " "
+				SiNo
+					
+					Escribir Sin Saltar "- "
+					
+				FinSi
 			FinSi
-			
 		FinPara
-		
-		Escribir "";
+		Escribir "|"
 		
 	FinPara
 	
-FinSubProceso
+FinSubAlgoritmo
 ///----------------------------------------------------------------------------------------------------------
 Funcion salida = elegirSalida
 	
