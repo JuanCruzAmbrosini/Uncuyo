@@ -3,11 +3,24 @@ package entities;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/*
+Clase Client: Clase que hereda de la clase "Person". Sus atributos son: nombre, DNI, sexo, edad y dirección. Representa el usuario que solicitará los servicios del técnico.
+ */
+
 public class Client extends Person{
 
     private String address;
+
+    /*
+    Constructor de la clase, en este caso, el constructor está vacío, ya que se prefirió definir los atributos del objeto a la hora de instanciarlo con otro método.
+     */
+
     public Client() {
     }
+
+    /*
+    Bloque de getters y setters
+     */
 
     public String address() {
         return address;
@@ -17,6 +30,11 @@ public class Client extends Person{
         this.address = address;
         return this;
     }
+
+    /*
+    Método crearCliente, usado, valga la redundancia, para crear un cliente. Toma aun objeto de tipo "Company" y guarda el objeto creado en una lista que ésta clase tiene como atributo
+    (relación uno a muchos), por éste motivo, el método es void, ya que no retorna ningún valor en sí mismo.
+     */
 
     public static void crearCliente(Company company) {
 
@@ -46,6 +64,11 @@ public class Client extends Person{
         company.setClients(listaClientes);
 
     }
+
+    /*
+    El método puntuarTécnico le solicita al usuario un puntaje y un mensaje (atributos de la clase "Review") para asignarle una reseña que va a ser guardada en una lista que el técnico
+    tiene como atributo (otra relación uno a muchos, un técnico puede tener múltiples reseñas).
+     */
 
     public static void puntuarTecnico (ArrayList <Technician> listaTecnicos) {
 
@@ -84,6 +107,10 @@ public class Client extends Person{
 
     }
 
+    /*
+    Éste método tiene como finalidad darle la posibilidad al usuario de crear una orden que va a ser asignada a un técnico específico. Cada técnico puede tener varias ordenes
+    (relación uno a muchos).
+     */
 
     public static void crearOrden (Company company){
 

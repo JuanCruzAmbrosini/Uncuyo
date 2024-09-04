@@ -4,8 +4,16 @@ import entities.Inspector;
 import entities.Technician;
 
 import java.util.Scanner;
-
+/*
+* Este programa está dedicado a crear un sistema que gestione la conexión entre usuarios o clientes con sus técnicos que brinden servicios para el hogar (como por ejemplo servicios
+* de gasista, electricista, plomería, etc...). Para lograr este cometido se han creado las clases "Company", "Client", "Technician" entre otras que ayudan a la congruencia y al funcionamiento
+* del programa. Soy conciente de algunos fallos en el funcionamiento del software, pero he decidido dejarlos para que este TP no sea tan extenso (fallos como el control de excepciones, login
+* de usuarios o actualización de las listas), también he modificado ciertas cosas que estaban presentes en el TP 1 porque me parecía que sería más correcto aplicarlas como en este código)
+* */
 public class Main {
+    /* Método main: Método principal en la ejecución del programa. En éste método se propone un menú, gestionado por un bloque switch case, que controla que "tipo de sesión" está iniciada
+        o de que manera tratar al usuario. Se compone de una variedad de llamadas a métodos pertenecientes, en su mayoría, a diferentes clases.
+     */
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in).useDelimiter("\n");
@@ -67,6 +75,9 @@ public class Main {
         }
 
     }
+
+    /*Método "caseCompany: Se utiliza para gestionar el caso de que el usuario sea la empresa que brinda el servicio de conectar al cliente con el técnico en el main"
+     */
 
     public static void caseCompany(Company company){
 
@@ -179,6 +190,9 @@ public class Main {
         }
     }
 
+    /*Método "caseClient: Se utiliza para gestionar el caso de que el usuario se un cliente que solicita servicios de un técnico en el main"
+     */
+
     public static void caseClient(Company company){
 
         Scanner scanner = new Scanner(System.in).useDelimiter("\n");
@@ -246,6 +260,9 @@ public class Main {
 
     }
 
+    /*Método "caseTechnician: Se utiliza para gestionar el caso de que el usuario se un técnico que brinda servicios en el main"
+     */
+
     public static void caseTechnician(Company company){
 
         Scanner scanner = new Scanner(System.in).useDelimiter("\n");
@@ -302,6 +319,9 @@ public class Main {
         }
 
     }
+
+    /*Método "caseCompany: Se utiliza para gestionar el caso de que el usuario se un inspector que inspecciona los servicios brindados por los técnicos en el main"
+     */
 
     public static void caseInspector(Company company){
 

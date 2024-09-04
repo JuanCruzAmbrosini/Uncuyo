@@ -347,7 +347,7 @@ public class Company {
 
             contador ++;
             System.out.println("-------------------------------------------------------------------------------------------");
-            System.out.println("Inspector N°: " + contador + "\nNombre: " + inspector.getName() + "\nDNI: " + inspector.id() + "\nProfesión: " + inspector.profession());
+            System.out.println("Inspector N°: " + contador + "\nNombre: " + inspector.getName() + "\nDNI: " + inspector.id() + "\nProfesión: " + inspector.profession() + "\nOrdenes aprovadas: " + inspector.approvedOrders() + "\nOrdenes rechazadas: " + inspector.deniedOrders());
             System.out.println("-------------------------------------------------------------------------------------------");
 
         }
