@@ -5,8 +5,6 @@ import java.util.Scanner;
 
 public class Client extends Person{
 
-    Scanner scanner = new Scanner(System.in).useDelimiter("\n");
-
     private String address;
     public Client() {
     }
@@ -20,7 +18,9 @@ public class Client extends Person{
         return this;
     }
 
-    public void crearCliente(Company company) {
+    public static void crearCliente(Company company) {
+
+        Scanner scanner = new Scanner(System.in).useDelimiter("\n");
 
         ArrayList<Client> listaClientes = company.clients();
 
@@ -47,8 +47,9 @@ public class Client extends Person{
 
     }
 
-    public void puntuarTecnico (ArrayList <Technician> listaTecnicos) {
+    public static void puntuarTecnico (ArrayList <Technician> listaTecnicos) {
 
+        Scanner scanner = new Scanner(System.in).useDelimiter("\n");
         String idTecnico;
 
         System.out.println("Ingrese el DNI del técnico que desea puntuar.");
@@ -84,11 +85,12 @@ public class Client extends Person{
     }
 
 
-    public void crearOrden (Company company){
+    public static void crearOrden (Company company){
+
+        Scanner scanner = new Scanner(System.in).useDelimiter("\n");
 
         String idTecnico;
         String tipoOrden;
-        boolean estadoOrden;
         Order ordenNueva = new Order();
 
         System.out.println("Ingrese el DNI del técnico que desea solicitar.");

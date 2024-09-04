@@ -2,6 +2,7 @@ package entities;
 
 import javax.management.remote.NotificationResult;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class Company {
@@ -10,6 +11,7 @@ public class Company {
 
     private ArrayList <Technician> technicians;
     private ArrayList <Order> orders;
+    private ArrayList<Order> acceptedOrders;
     private ArrayList <Inputs> inputs;
     private ArrayList <Client> clients;
     private ArrayList<Inspector> inspectors;
@@ -29,6 +31,8 @@ public class Company {
         this.technicians = new ArrayList<Technician>();
         this.orders = new ArrayList<Order>();
         this.clients = new ArrayList<Client>();
+        this.inspectors = new ArrayList<Inspector>();
+        this.acceptedOrders = new ArrayList<>();
         this.inputs = inputList;
 
     }
@@ -78,6 +82,26 @@ public class Company {
         return this;
     }
 
+    public ArrayList<Order> getAcceptedOrders() {
+        return acceptedOrders;
+    }
+
+    public void setAcceptedOrders(ArrayList<Order> acceptedOrders) {
+        this.acceptedOrders = acceptedOrders;
+    }
+
+    @Override
+    public String toString() {
+        return "Company{" +
+                "scanner=" + scanner +
+                ", technicians=" + technicians +
+                ", orders=" + orders +
+                ", inputs=" + inputs +
+                ", clients=" + clients +
+                ", inspectors=" + inspectors +
+                '}';
+    }
+
     public void createTechnician (Company company){
 
         ArrayList<Technician> listaTecnicos = company.technicians();
@@ -105,6 +129,40 @@ public class Company {
 
     }
 
+    public void crearInspector(Company company){
+
+        Inspector inspector = new Inspector();
+
+        String nombre;
+        String dni;
+        String sexo;
+        int edad;
+        String profesion;
+
+        System.out.println("Ingrese su nombre: ");
+        nombre = scanner.next();
+        inspector.setName(nombre);
+
+        System.out.println("Ingrese su DNI: ");
+        dni = scanner.next();
+        inspector.setId(dni);
+
+        System.out.println("Ingrese su sexo: ");
+        sexo = scanner.next();
+        inspector.setSex(sexo);
+
+        System.out.println("Ingrese su edad: ");
+        edad = scanner.nextInt();
+        inspector.setAge(edad);
+
+        System.out.println("Ingrese su profesión: ");
+        profesion = scanner.next();
+        inspector.setProfession(profesion);
+
+        company.inspectors().add(inspector);
+
+    }
+
     public void comprarInsumos(Company company){
 
         int insumosAComprar;
@@ -123,13 +181,13 @@ public class Company {
             cantidadLitros = scanner.nextDouble();
             insumoActual.setProductLiters(cantidadLitros);
 
-            System.out.println("El técnico necesitará herramientas para el insumo " + i + ": ");
+            System.out.println("El técnico necesitará herramientas para el insumo " + i + ": (s/n)");
             necesitaHerramientas = scanner.next();
             if (necesitaHerramientas == "s" ^ necesitaHerramientas == "S") {
 
                 insumoActual.setNeedsTools(true);
 
-            } else if (necesitaHerramientas == "o" ^ necesitaHerramientas == "O") {
+            } else if (necesitaHerramientas == "n" ^ necesitaHerramientas == "N") {
 
                 insumoActual.setNeedsTools(false);
 
@@ -145,38 +203,64 @@ public class Company {
         }
 
     }
-    public void eliminarTecnico(Company company, String id){
+    public void eliminarTecnico(Company company, String id) {
 
-        for(Technician tecnico : company.technicians()){
+        boolean found = false;
+        Iterator<Technician> iterator = company.technicians().iterator();
 
-            if(tecnico.id().equalsIgnoreCase(id)){
+        while (iterator.hasNext()) {
+            Technician tecnico = iterator.next();
 
-                company.technicians.remove(tecnico);
-
-            } else {
-
-                System.out.println("No se encontró el técnico solicitado.");
-
+            if (tecnico.id().equalsIgnoreCase(id)) {
+                iterator.remove();
+                found = true;
+                break;
             }
-
         }
 
+        if (!found) {
+            System.out.println("No se encontró el técnico solicitado.");
+        }
     }
 
     public void eliminarCliente(Company company, String id){
 
-        for(Client client : company.clients()){
+        boolean found = false;
+        Iterator<Client> iterator = company.clients().iterator();
 
-            if(client.id().equalsIgnoreCase(id)){
+        while (iterator.hasNext()) {
+            Client cliente = iterator.next();
 
-                company.clients.remove(client);
-
-            } else {
-
-                System.out.println("No se encontró el cliente solicitado.");
-
+            if (cliente.id().equalsIgnoreCase(id)) {
+                iterator.remove();
+                found = true;
+                break;
             }
+        }
 
+        if (!found) {
+            System.out.println("No se encontró el cliente solicitado.");
+        }
+
+    }
+
+    public void eliminarInspector(Company company, String id){
+
+        boolean found = false;
+        Iterator<Inspector> iterator = company.inspectors().iterator();
+
+        while (iterator.hasNext()) {
+            Inspector inspector = iterator.next();
+
+            if (inspector.id().equalsIgnoreCase(id)) {
+                iterator.remove();
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No se encontró el técnico solicitado.");
         }
 
     }
@@ -189,10 +273,127 @@ public class Company {
 
             contador ++;
 
-            System.out.println("El id de la orden: " + contador + "es: " + orden.id());
+            if (orden.budget() != 0 ) {
+                System.out.println("-------------------------------------------------------------------------------------------");
+                System.out.println("El id de la orden: " + contador + " es: " + orden.id() + "\nEl estado de evaluación de la orden es: " + orden.orderState() + "\nEl tipo de la orden es: " + orden.orderType() + "\nAceptación de la orden: " + orden.getOrderStateTechnisian() + "\nEl presupuesto para la orden es de: $" + orden.budget());
+                System.out.println("-------------------------------------------------------------------------------------------");
+
+            } else {
+
+                System.out.println("-------------------------------------------------------------------------------------------");
+                System.out.println("El id de la orden: " + contador + " es: " + orden.id() + "\nEl estado de evaluación de la orden es: " + orden.orderState() + "\nEl tipo de la orden es: " + orden.orderType() + "\nAceptación de la orden: " + orden.getOrderStateTechnisian());
+                System.out.println("-------------------------------------------------------------------------------------------");
+            }
+        }
+    }
+
+    public void mostrarClientes (ArrayList<Client> clientes){
+
+        int contador = 0;
+
+        for (Client cliente : clientes){
+
+            contador ++;
+
+            System.out.println("-------------------------------------------------------------------------------------------");
+            System.out.println("Cliente N°: " + contador + "\nNombre: " + cliente.getName() + "\nDNI: " + cliente.id());
+            System.out.println("-------------------------------------------------------------------------------------------");
 
         }
 
+    }
+
+    public void mostrarTecnicos (ArrayList<Technician> tecnicos){
+
+        int contador = 0;
+        double puntuacionGeneral = 0;
+        int puntuacionTotal = 0;
+
+        for (Technician tecnico : tecnicos){
+
+            if (tecnico.reviews().size() > 0){
+
+                for (Review review : tecnico.reviews()){
+
+                    puntuacionTotal += review.score();
+
+                }
+
+                puntuacionGeneral = (double) puntuacionTotal/tecnico.reviews().size();
+
+                contador ++;
+                System.out.println("-------------------------------------------------------------------------------------------");
+                System.out.println("Tecnico N°: " + contador + "\nNombre: " + tecnico.getName() + "\nDNI: " + tecnico.id() + "\nProfesión: " + tecnico.profession() + "\nValoración: " + puntuacionGeneral);
+                System.out.println("-------------------------------------------------------------------------------------------");
+
+            } else {
+
+                contador ++;
+                System.out.println("-------------------------------------------------------------------------------------------");
+                System.out.println("Tecnico N°: " + contador + "\nNombre: " + tecnico.getName() + "\nDNI: " + tecnico.id() + "\nProfesión: " + tecnico.profession());
+                System.out.println("-------------------------------------------------------------------------------------------");
+
+            }
+
+        }
+
+    }
+
+    public void mostrarInspectores (ArrayList<Inspector> inspectores){
+
+        int contador = 0;
+
+        for (Inspector inspector : inspectores){
+
+            contador ++;
+            System.out.println("-------------------------------------------------------------------------------------------");
+            System.out.println("Inspector N°: " + contador + "\nNombre: " + inspector.getName() + "\nDNI: " + inspector.id() + "\nProfesión: " + inspector.profession());
+            System.out.println("-------------------------------------------------------------------------------------------");
+
+        }
+
+    }
+
+    public Technician buscarTecnicoPorId(Company company, String idTecnico){
+
+        Technician technician = new Technician();
+
+        for(Technician tecnico : company.technicians()){
+
+            if (idTecnico.equalsIgnoreCase(tecnico.id())){
+
+                technician = tecnico;
+
+            } else {
+
+                technician = null;
+
+            }
+
+        }
+
+        return technician;
+    }
+
+    public Inspector buscarInspectorPorId(Company company, String idInspector){
+
+        Inspector inspector = new Inspector();
+
+        for(Inspector inspector1 : company.inspectors()){
+
+            if (idInspector.equalsIgnoreCase(inspector1.id())){
+
+                inspector = inspector1;
+
+            } else {
+
+                inspector = null;
+
+            }
+
+        }
+
+        return inspector;
     }
 
 }

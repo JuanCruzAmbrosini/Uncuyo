@@ -7,6 +7,7 @@ public class Order {
     private String orderType;
     private double budget;
     private String orderState;
+    private String orderStateTechnisian;
     private String id;
 
     public Order(){
@@ -14,6 +15,7 @@ public class Order {
         Random random = new Random();
 
         this.orderState = "No evaluada";
+        this.orderStateTechnisian = "No tomada";
         this.id = String.valueOf(random.nextInt(1000));
 
     }
@@ -21,9 +23,8 @@ public class Order {
         return orderType;
     }
 
-    public Order setOrderType(String orderType) {
+    public void setOrderType(String orderType) {
         this.orderType = orderType;
-        return this;
     }
 
     public double budget() {
@@ -39,9 +40,8 @@ public class Order {
         return orderState;
     }
 
-    public Order setOrderState(String orderState) {
+    public void setOrderState(String orderState) {
         this.orderState = orderState;
-        return this;
     }
 
     public String id() {
@@ -51,5 +51,13 @@ public class Order {
     public Order setId(String id) {
         this.id = id;
         return this;
+    }
+
+    public String getOrderStateTechnisian() {
+        return orderStateTechnisian;
+    }
+
+    public void setOrderStateTechnisian(String orderStateTechnisian) {
+        this.orderStateTechnisian = orderStateTechnisian;
     }
 }

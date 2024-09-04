@@ -37,4 +37,13 @@ public class Inputs {
     public void setOthers(String others) {
         this.others = others;
     }
+
+    @Override
+    public String toString() {
+        return "Inputs{" +
+                "productLiters=" + productLiters +
+                ", needsTools=" + needsTools +
+                ", others='" + others + '\'' +
+                '}';
+    }
 }

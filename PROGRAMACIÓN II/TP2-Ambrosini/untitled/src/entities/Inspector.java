@@ -77,16 +77,5 @@ public class Inspector extends Technician{
 
 
     }
-    public void crearInspector(){
-
-        String nombre;
-        String dni;
-        String sexo;
-        int edad;
-        String profesion;
-
-        System.out.println("Ingrese su");
-
-    }
 
 }
