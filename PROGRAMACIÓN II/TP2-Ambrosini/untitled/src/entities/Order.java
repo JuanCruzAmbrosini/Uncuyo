@@ -2,6 +2,11 @@ package entities;
 
 import java.util.Random;
 
+/*
+Clase Order: Clase usada para formar ordenes, no tinene métodos propios, ya que otras entidades son las que se encargan de gestionarlas. Sus atributos son: Tipo de orden, presupuesto,
+orden aceptada por tecnico, estado de la orden, id de la orden.
+ */
+
 public class Order {
 
     private String orderType;
