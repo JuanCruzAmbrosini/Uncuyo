@@ -6,6 +6,8 @@ from algo1 import *
 import random
 import math
 
+suma = 0
+
 dimension_vector1 = 10
 vector1 = Array(dimension_vector1, 0)
 
@@ -29,6 +31,13 @@ if (dimension_vector1 == dimension_vector2):
         vectorResultado[i] = vector1[i] + vector2[i]
     print("Vector resultado:")
     print(vectorResultado)
+    
+    for i in range (0, dimension_vector1):
+        suma += vectorResultado[i]^2
+    norma_cuadratica = math.sqrt(suma)
+    print("Norma cuadrática: ")
+    print(norma_cuadratica)
+    
 else:
     print("Los vectores no tienen el mismo tamaño y no pueden ser sumados.")
 
