@@ -12,7 +12,7 @@ def entrega_billetes_2(monto):
             inc=inc+1
             billete_actual=billete/(10**inc)
 
-for i in range (100000 ,1000001, 100000):
+for i in range (100000 ,1100000, 100000):
     start = time.time()
 
     entrega_billetes_2(i)
