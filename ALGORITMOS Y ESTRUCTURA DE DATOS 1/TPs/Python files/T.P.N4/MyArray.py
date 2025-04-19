@@ -90,7 +90,7 @@ def length (array):
             
 #---------------------------------------------------------------------------------------------------------------------
         
-arreglo = Array(20,0)
+"""arreglo = Array(20,0)
 for i in range (0,20):
     arreglo[i] = random.randint(-20,20)
     
@@ -108,4 +108,4 @@ print(arreglo)
 print("------------------------------------------------")
 print("Finalmente, veremos la cantidad de elementos no nulos en nuestro arreglo: ")
 print(length(arreglo))
-print("------------------------------------------------")
+print("------------------------------------------------")"""

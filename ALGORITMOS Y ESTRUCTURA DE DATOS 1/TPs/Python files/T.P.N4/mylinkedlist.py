@@ -7,6 +7,8 @@ class Node:
     
 """---------------------------------------------------------------------------------------------"""
     
+#Orden de complejidad: O(1)
+    
 def add(lista, elemento):
     if lista.head == None:
         newHead = Node()
@@ -19,6 +21,9 @@ def add(lista, elemento):
         lista.head = newHead
         
 """---------------------------------------------------------------------------------------------"""
+
+#Orden de complejidad: O(n)
+#Orden de complejidad arreglo: O(n)
 
 def search(list, element):
     exist = False
@@ -35,8 +40,11 @@ def search(list, element):
     
 """---------------------------------------------------------------------------------------------"""
 
+#Orden de complejidad: O(n)
+#Orden de complejidad arreglo: O(n)
+
 def insert(list, element, index):
-    if length(list) < index :
+    if lengthList(list) < index :
         return None
     else:
         current_node = list.head
@@ -46,7 +54,7 @@ def insert(list, element, index):
             add(list, element)
             return index
         else: 
-            for i in range (1,length(list) + 1):
+            for i in range (1,lengthList(list) + 1):
                     if i == index:
                         new_node.nextNode = current_node.nextNode
                         current_node.nextNode = new_node
@@ -55,6 +63,9 @@ def insert(list, element, index):
             return index
     
 """---------------------------------------------------------------------------------------------"""
+
+#Orden de complejidad O(n)
+#Orden de complejidad arreglo: O(n^2)
 
 def delete(list, element):
     element_position = search(list, element)
@@ -74,22 +85,27 @@ def delete(list, element):
 
 """---------------------------------------------------------------------------------------------"""
 
-def mostrarLista (lista):
+#Orden de complejidad: O(n)
+
+def showList (lista):
     current_node = lista.head
     while current_node != None :
-        print(current_node.value)
+        print(current_node.value," ", end="")
         current_node = current_node.nextNode
+    print("")
         
 """---------------------------------------------------------------------------------------------"""
 
+#Orden de complejidad: O(n)
+
 def update (list, element, index):
     current_node = list.head
-    size = length(list) - 1
+    size = lengthList(list)
     value = None
     
     if index > size or index < 0 :
         return None
-    for i in range(0, size + 1):
+    for i in range(0, size):
         if i == index:
             current_node.value = element
             return index
@@ -97,9 +113,11 @@ def update (list, element, index):
 
 """---------------------------------------------------------------------------------------------"""
 
+#Orden de complejidad: O(n)
+
 def access(list, index):
     current_node = list.head
-    size = length(list) - 1
+    size = lengthList(list) - 1
     value = None
     
     if index > size or index < 0 :
@@ -113,7 +131,10 @@ def access(list, index):
 
 """---------------------------------------------------------------------------------------------"""
 
-def length(list):
+#Orden de complejidad: O(n)
+#Orden de complejidad arreglo: O(n)
+
+def lengthList(list):
     lenght = 0
     current_node = list.head
     while current_node != None: 
@@ -123,20 +144,12 @@ def length(list):
 
 """---------------------------------------------------------------------------------------------"""
 
-lista = LinkedList()
-add(lista, 1)
-add(lista, 2)
-add(lista, 3)
-add(lista, 4)
-insert(lista, 0, 3)
-delete(lista,1)
-print("-------------------------------------------------")
-print(access(lista, 4))
-print("-------------------------------------------------")
-print(search(lista, 6))
-print("-------------------------------------------------")
-mostrarLista(lista)
-print("-------------------------------------------------")
-update(lista, 20, 3)
-mostrarLista(lista)
-
+def invertList(list):
+    prev = None
+    current = list.head
+    while current != None:
+        next_node = current.nextNode
+        current.nextNode = prev
+        prev = current
+        current = next_node
+    list.head = prev
