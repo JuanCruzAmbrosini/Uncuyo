@@ -2,7 +2,7 @@
 # Algoritmos y estructuras de datos I
 import unittest
 
-from mylinkedlist import LinkedList,insert,length,access,delete,search,add,update
+from mylinkedlist import LinkedList,insert,lengthList,access,delete,search,add,update
 
 class TestLinkedList(unittest.TestCase):
     def setUp(self):
@@ -182,7 +182,7 @@ class TestLinkedList(unittest.TestCase):
         """ -- Verifica el numero de elementos de la lista cuando la lista esta vacia
         """
         L=LinkedList()
-        res=length(L)
+        res=lengthList(L)
         self.assertEqual(res,0)
 
 
