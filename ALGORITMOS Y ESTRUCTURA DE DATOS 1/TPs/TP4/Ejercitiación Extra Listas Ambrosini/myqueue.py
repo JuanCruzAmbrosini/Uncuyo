@@ -1,21 +1,28 @@
-from algo1 import *
 from mylinkedlist import *
+from algo1 import *
 from MyArray import length
+
+"""----------------------------------------------------------------------------------"""
+
+def enqueue (list, element):
+    add(list, element)
     
 """----------------------------------------------------------------------------------"""
 
-def push(list, element):
-    add(list, element)
-
-"""----------------------------------------------------------------------------------"""
-
-def pop(list):
-    if list.head == None :
+def dequeue(list):
+    current_node = list.head
+    if list.head == None: 
         return None
-    else:
-        popedElement = list.head.value
-        list.head = list.head.nextNode
-        return popedElement
+    elif( list.head.nextNode == None ): 
+        dequeued_element = list.head.value
+        list.head = None
+        return dequeued_element
+    else:    
+        while(current_node.nextNode.nextNode != None):
+            current_node = current_node.nextNode
+        dequeued_element = current_node.nextNode.value
+        current_node.nextNode = None
+        return dequeued_element
 
 """----------------------------------------------------------------------------------"""
 
@@ -30,11 +37,9 @@ list = fillList(array1)
 
 showList(list)
 print("----------------------------------------------------------------------------")
-push(list, 1000)
+enqueue(list, 1000)
 showList(list)
 print("----------------------------------------------------------------------------")
-popedElement = pop(list)
+dequeued_element = dequeue(list)
 showList(list)
-print(popedElement)
-print("----------------------------------------------------------------------------")"""
-
+print(dequeued_element)"""
