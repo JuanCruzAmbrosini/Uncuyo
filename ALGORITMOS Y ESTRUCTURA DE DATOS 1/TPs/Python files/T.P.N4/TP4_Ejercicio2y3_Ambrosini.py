@@ -45,11 +45,8 @@ def noRepeatsId(listA):
     while current_comparator.nextNode != None:
         while current != None:
             if current.value.id == current_comparator.value.id:
-                counter += 1
-                for i in range(0, counter):
-                    delete(listA, current.value)
+                delete(listA, current.value)
             current = current.nextNode
-        counter = 0
         current_comparator = current_comparator.nextNode
         current = current_comparator.nextNode
         
