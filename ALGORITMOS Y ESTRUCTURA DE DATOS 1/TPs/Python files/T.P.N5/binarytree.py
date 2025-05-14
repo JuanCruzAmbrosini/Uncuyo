@@ -1,5 +1,5 @@
 from algo1 import *
-from mylinkedlist import *
+import mylinkedlist as List
 
 class BinaryTree:
     root=None
@@ -73,14 +73,6 @@ def insert (tree : BinaryTree, element, key : int):
 
 """----------------------------------------------------------------------------------------------------------"""
 
-"""delete(B,element)
-Descripción: Elimina un elemento del TAD árbol binario.
-Poscondición: Se debe desvincular el Node a eliminar.
-Entrada: el árbol binario B sobre el cual se quiere realizar la
-eliminación (BinaryTree) y el valor del elemento (element) a eliminar.
-Salida: Devuelve clave (key) del elemento a eliminar. Devuelve None si
-el elemento a eliminar no se encuentra."""
-
 def delete_r (tree : BinaryTree, current : BinaryTreeNode, element):
     if (current.value == element):
         key = current.key
@@ -90,11 +82,11 @@ def delete_r (tree : BinaryTree, current : BinaryTreeNode, element):
                 tree.root = None
                 return key
             else: 
-                if current.key > current.parent.key:
-                    current.parent.rightnode = None
-                    return key
-                elif current.key < current.parent.key:
+                if current.parent.leftnode == current:
                     current.parent.leftnode = None
+                    return key
+                elif current.parent.rightnode == current:
+                    current.parent.rightnode = None
                     return key
                 else : 
                     return None
@@ -110,7 +102,7 @@ def delete_r (tree : BinaryTree, current : BinaryTreeNode, element):
                     current.leftnode.parent = current.parent
                     return key
                 elif current.key < current.parent.key:
-                    current.parent.leftnode = current.leftnode
+                    current.parent.leftnode = current.leftnode     
                     current.rightnode.parent = current.parent
                     return key
                 else : 
@@ -136,75 +128,39 @@ def delete_r (tree : BinaryTree, current : BinaryTreeNode, element):
             while(aux_node.leftnode != None):
                 aux_node = aux_node.leftnode 
             #SE ELIMINA AL SUCESOR INORDEN
-            """if aux_node != current.rightnode:
-                if aux_node.key > aux_node.parent.key:
-                    aux_node.parent.rightnode = None    
-                elif aux_node.key < aux_node.parent.key:
-                    aux_node.parent.leftnode = None"""
             if aux_node != current.rightnode:
-            # Si el sucesor no es el hijo derecho de current
-            # Conectar el hijo derecho del sucesor al padre del sucesor
-                if aux_node.rightnode != None:
-                    aux_node.rightnode.parent = aux_node.parent
                 if aux_node.parent.leftnode == aux_node:
-                    aux_node.parent.leftnode = aux_node.rightnode
-                else:
-                    aux_node.parent.rightnode = aux_node.rightnode
+                    aux_node.parent.leftnode = None
+                if aux_node.parent.rightnode == aux_node:
+                    aux_node.parent.rightnode = None
+            else:
+                current.rightnode = None
+                
             #SE REEMPLAZA AL NODO ACTUAL POR EL SUCESOR INORDEN
-            """if current.parent == None:
+            if current.parent == None:
+                tree.root = aux_node
                 aux_node.rightnode = current.rightnode
                 aux_node.leftnode = current.leftnode
-                current.leftnode.parent = aux_node
-                current.rightnode.parent = aux_node
-                tree.root = aux_node
+                aux_node.parent = None
                 current = None
                 return key
-            else: 
-                if aux_node != current.rightnode:
-                    aux_node.rightnode = current.rightnode
-                else:
-                 # No tocar el rightnode porque ya es él mismo
-                    pass
-                aux_node.leftnode = current.leftnode
-                if current.leftnode != None:
-                    current.leftnode.parent = aux_node
-                if current.rightnode != None:
-                    current.rightnode.parent = aux_node
-                aux_node.parent = current.parent
-                current = None
-                return key"""
-                
-            if current.parent == None:
-                # Si current es la raíz, el sucesor se convierte en la nueva raíz
-                tree.root = aux_node
             else:
-                # Si current no es la raíz, se ajusta el padre
+                aux_node.rightnode = current.rightnode
+                aux_node.leftnode = current.leftnode
+                aux_node.parent = current.parent
                 if current.parent.leftnode == current:
                     current.parent.leftnode = aux_node
-                else:
+                if current.parent.rightnode == current:
                     current.parent.rightnode = aux_node
-
-            # Ahora ajustamos los punteros del sucesor
-            aux_node.leftnode = current.leftnode
-            if current.leftnode != None:
-                current.leftnode.parent = aux_node
-
-            aux_node.rightnode = current.rightnode
-            if current.rightnode != None:
-                current.rightnode.parent = aux_node
-
-            # Ajustamos el padre del sucesor
-            aux_node.parent = current.parent
-
-            # Finalmente, eliminamos el nodo original
-            current = None
-
-    #SE IMPLEMENTA LA RECURSIÓN EN EL CASO DE NO ENCONTRAR UN VALOR SIMILAR
+                current = None
+                return key
     else:
-        if element < current.value and current.leftnode:
-            return delete_r(tree, current.leftnode, element)
-        elif element > current.value and current.rightnode:
-            return delete_r(tree, current.rightnode, element)   
+        result = None
+        if current.leftnode != None:
+             result = delete_r(tree, current.leftnode, element) 
+        if current.rightnode != None:
+             result = delete_r(tree, current.rightnode, element)   
+        return result
         
 def delete(tree : BinaryTree, element):
     if tree.root == None :
@@ -214,87 +170,243 @@ def delete(tree : BinaryTree, element):
         return delete_r(tree, current, element)
 
 """----------------------------------------------------------------------------------------------------------"""
+
+def delete_key_r(tree : BinaryTree, current : BinaryTreeNode, key : int):
+    #BUSCAMOS NODO A ELIMINAR
+    d_node = search_key_r(current, key)
+    if d_node == None:
+        return None
+    else:
+        ret_key = d_node.key
+        #CASO DE QUE NO HAYAN HIJOS
+        if d_node.leftnode == None and d_node.rightnode == None:
+            if d_node.parent == None:
+                tree.root = None
+                return key
+            if d_node.parent.leftnode == d_node:
+                d_node.parent.leftnode = None
+                return ret_key
+            if d_node.parent.rightnode == d_node:
+                d_node.parent.rightnode = None
+                return ret_key
+        #CASO DE QUE HAYA UN SOLO HIJO
+        #LADO IZQUIERDO
+        if d_node.rightnode == None:
+            if d_node.parent == None:
+                tree.root = d_node.leftnode
+                return ret_key
+            if d_node.parent.leftnode == d_node:
+                d_node.parent.leftnode = d_node.leftnode
+                d_node = None
+                return ret_key
+            if d_node.parent.rightnode == d_node:
+                d_node.parent.rightnode = d_node.leftnode
+                d_node = None
+                return ret_key
+        #LADO DERECHO
+        if d_node.leftnode == None:
+            if d_node.parent == None:
+                tree.root = d_node.rightnode
+                return ret_key
+            if d_node.parent.leftnode == d_node:
+                d_node.parent.leftnode = d_node.rightnode
+                d_node = None
+                return ret_key
+            if d_node.parent.rightnode == d_node:
+                d_node.parent.rightnode = d_node.rightnode
+                d_node = None
+                return ret_key
+        #CASO DOS HIJOS
+        else:
+            #BUSCO EL SUCESOR INORDEN
+            succesor : BinaryTreeNode = search_inorder_succesor(d_node)
+            #SE ELIMINA AL SUCESOR INORDEN
+            if succesor.parent.leftnode == succesor:
+                 succesor.parent.leftnode = None
+            if succesor.parent.rightnode == succesor:
+                succesor.parent.rightnode = succesor.rightnode
+            #REEMPLAZO EL NODO A ELIMINAR POR EL SUCESOR INORDEN
+            if d_node.parent == None:
+                tree.root = succesor
+                succesor.leftnode = d_node.leftnode
+                succesor.rightnode = d_node.rightnode
+                if succesor.leftnode != None:
+                    succesor.leftnode.parent = succesor
+                if succesor.rightnode != None:
+                    succesor.rightnode.parent = succesor
+                d_node = None
+                return ret_key
+            else:
+                succesor.leftnode = d_node.leftnode
+                succesor.rightnode = d_node.rightnode
+                if succesor.leftnode:
+                    succesor.leftnode.parent = succesor
+                if succesor.rightnode:
+                    succesor.rightnode.parent = succesor
+                if d_node.parent.leftnode == d_node:
+                    d_node.parent.leftnode = succesor
+                if d_node.parent.rightnode == d_node:
+                    d_node.parent.rightnode = succesor
+                d_node
+                return ret_key
+                
+
+def deleteKey(tree : BinaryTree, key : int):
+    if tree.root == None :
+        return None
+    else : 
+        return delete_key_r(tree, tree.root, key)
+
+"""----------------------------------------------------------------------------------------------------------"""
+
+def access(tree : BinaryTree, key):
+    if tree.root == None :
+        return None
+    else:
+        result = search_key(tree, key)
+    if result == None:
+        return None
+    else:
+        return result.value
+
+"""----------------------------------------------------------------------------------------------------------"""
+
+def update(tree, element, key):
+    u_node = search_key(tree, key)
+    if u_node == None:
+        return None
+    else:
+        u_node.value = element
+        return u_node.key
+
+"""----------------------------------------------------------------------------------------------------------"""
+
+def traverseInOrder_r(current : BinaryTreeNode, list : List.LinkedList):
+    succesor = search_inorder_succesor(current)
+    if succesor == None:
+        return list
+    else:
+        List.add(list, succesor.value)
+        return traverseInOrder_r(succesor, list)
+    
+
+def traverseInOrder(tree : BinaryTree,):
+    if (tree.root == None): 
+        return None
+    else:
+        list = List.LinkedList()
+        #BUSCAMOS EL NODO CON LA KEY MÁS CHICA
+        start : BinaryTreeNode = tree.root
+        while start.leftnode != None:
+            start = start.leftnode
+        List.add(list, start.value)
+        result =  traverseInOrder_r(start, list)
+        List.invertList(result)
+        return result
+            
+"""----------------------------------------------------------------------------------------------------------"""
+
+def traverseInPostOrder_r(node : BinaryTreeNode, list):
+    if node != None:
+        traverseInPostOrder_r(node.leftnode, list)
+        traverseInPostOrder_r(node.rightnode, list)
+        List.add(list, node.value)
+
+def traverseInPostOrder(tree : BinaryTree):
+    list : List.LinkedList = List.LinkedList
+    if tree. root == None:
+        return None
+    else:
+        traverseInPostOrder_r(tree.root, list)
+        List.invertList(list)
+        return list
+
+"""----------------------------------------------------------------------------------------------------------"""
+
+def search_key_r(current : BinaryTreeNode, key):
+    if current == None:
+        return None
+    if current.key == key:
+        result = current
+    elif current.key > key:
+        result = search_key_r(current.leftnode, key)
+    else :
+        result = search_key_r(current.rightnode, key)
+    return result
+
+def search_key (tree : BinaryTree, key : int):
+    if tree.root == None:
+        return None
+    else:
+        return search_key_r(tree.root, key)
+    
+"""----------------------------------------------------------------------------------------------------------"""
         
-# Crear el árbol
+# Crear el arbol
 tree = BinaryTree()
 
-# Nivel 1
+# Nivel 1 (raíz)
 tree.root = BinaryTreeNode()
-tree.root.key = 1
-tree.root.value = "A"
+tree.root.key = 8
+tree.root.value = "H"
 
 # Nivel 2
 tree.root.leftnode = BinaryTreeNode()
-tree.root.leftnode.key = 2
-tree.root.leftnode.value = "B"
+tree.root.leftnode.key = 3
+tree.root.leftnode.value = "C"
 tree.root.leftnode.parent = tree.root
 
 tree.root.rightnode = BinaryTreeNode()
-tree.root.rightnode.key = 3
-tree.root.rightnode.value = "C"
+tree.root.rightnode.key = 10
+tree.root.rightnode.value = "J"
 tree.root.rightnode.parent = tree.root
 
 # Nivel 3
 tree.root.leftnode.leftnode = BinaryTreeNode()
-tree.root.leftnode.leftnode.key = 4
-tree.root.leftnode.leftnode.value = "D"
+tree.root.leftnode.leftnode.key = 1
+tree.root.leftnode.leftnode.value = "A"
 tree.root.leftnode.leftnode.parent = tree.root.leftnode
 
 tree.root.leftnode.rightnode = BinaryTreeNode()
-tree.root.leftnode.rightnode.key = 5
-tree.root.leftnode.rightnode.value = "E"
+tree.root.leftnode.rightnode.key = 6
+tree.root.leftnode.rightnode.value = "F"
 tree.root.leftnode.rightnode.parent = tree.root.leftnode
 
-tree.root.rightnode.leftnode = BinaryTreeNode()
-tree.root.rightnode.leftnode.key = 6
-tree.root.rightnode.leftnode.value = "F"
-tree.root.rightnode.leftnode.parent = tree.root.rightnode
-
 tree.root.rightnode.rightnode = BinaryTreeNode()
-tree.root.rightnode.rightnode.key = 7
-tree.root.rightnode.rightnode.value = "G"
+tree.root.rightnode.rightnode.key = 14
+tree.root.rightnode.rightnode.value = "N"
 tree.root.rightnode.rightnode.parent = tree.root.rightnode
 
 # Nivel 4
-tree.root.leftnode.leftnode.leftnode = BinaryTreeNode()
-tree.root.leftnode.leftnode.leftnode.key = 8
-tree.root.leftnode.leftnode.leftnode.value = "H"
-tree.root.leftnode.leftnode.leftnode.parent = tree.root.leftnode.leftnode
-
-tree.root.leftnode.leftnode.rightnode = BinaryTreeNode()
-tree.root.leftnode.leftnode.rightnode.key = 9
-tree.root.leftnode.leftnode.rightnode.value = "I"
-tree.root.leftnode.leftnode.rightnode.parent = tree.root.leftnode.leftnode
-
 tree.root.leftnode.rightnode.leftnode = BinaryTreeNode()
-tree.root.leftnode.rightnode.leftnode.key = 10
-tree.root.leftnode.rightnode.leftnode.value = "J"
+tree.root.leftnode.rightnode.leftnode.key = 4
+tree.root.leftnode.rightnode.leftnode.value = "D"
 tree.root.leftnode.rightnode.leftnode.parent = tree.root.leftnode.rightnode
 
 tree.root.leftnode.rightnode.rightnode = BinaryTreeNode()
-tree.root.leftnode.rightnode.rightnode.key = 11
-tree.root.leftnode.rightnode.rightnode.value = "K"
+tree.root.leftnode.rightnode.rightnode.key = 7
+tree.root.leftnode.rightnode.rightnode.value = "G"
 tree.root.leftnode.rightnode.rightnode.parent = tree.root.leftnode.rightnode
 
-tree.root.rightnode.leftnode.leftnode = BinaryTreeNode()
-tree.root.rightnode.leftnode.leftnode.key = 12
-tree.root.rightnode.leftnode.leftnode.value = "L"
-tree.root.rightnode.leftnode.leftnode.parent = tree.root.rightnode.leftnode
-
-tree.root.rightnode.leftnode.rightnode = BinaryTreeNode()
-tree.root.rightnode.leftnode.rightnode.key = 13
-tree.root.rightnode.leftnode.rightnode.value = "M"
-tree.root.rightnode.leftnode.rightnode.parent = tree.root.rightnode.leftnode
-
 tree.root.rightnode.rightnode.leftnode = BinaryTreeNode()
-tree.root.rightnode.rightnode.leftnode.key = 14
-tree.root.rightnode.rightnode.leftnode.value = "N"
+tree.root.rightnode.rightnode.leftnode.key = 13
+tree.root.rightnode.rightnode.leftnode.value = "M"
 tree.root.rightnode.rightnode.leftnode.parent = tree.root.rightnode.rightnode
 
-tree.root.rightnode.rightnode.rightnode = BinaryTreeNode()
-tree.root.rightnode.rightnode.rightnode.key = 15
-tree.root.rightnode.rightnode.rightnode.value = "O"
-tree.root.rightnode.rightnode.rightnode.parent = tree.root.rightnode.rightnode
+"""----------------------------------------------------------------------------------------------------------"""
+
+def search_inorder_succesor(node : BinaryTreeNode):
+    if node.rightnode != None:
+        node = node.rightnode
+        while node.leftnode != None:
+            node = node.leftnode
+        return node
+    parent : BinaryTreeNode = node.parent
+    while parent != None and parent.rightnode == node:
+        node = parent
+        parent = parent.parent
+    return parent
+
 """----------------------------------------------------------------------------------------------------------"""
 
 def print_tree(node : BinaryTreeNode, level = 0, prefix = ""):
@@ -307,11 +419,6 @@ def print_tree(node : BinaryTreeNode, level = 0, prefix = ""):
 
 print_tree(tree.root)
 print("-------------------------------------------------------")
-delete(tree,"F")
-delete(tree,"C")
-delete(tree,"M")
-delete(tree,"A")
-delete(tree,"K")
-delete(tree,"O")
-print_tree(tree.root)
+list = traverseInPostOrder(tree)
+List.showList(list)
 
