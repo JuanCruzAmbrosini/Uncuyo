@@ -1,5 +1,6 @@
 from algo1 import *
 import mylinkedlist as List
+import myqueue as Q
 
 class BinaryTree:
     root=None
@@ -321,20 +322,66 @@ def traverseInOrder(tree : BinaryTree,):
             
 """----------------------------------------------------------------------------------------------------------"""
 
-def traverseInPostOrder_r(node : BinaryTreeNode, list):
+def traverseInPostOrder_r(node : BinaryTreeNode, listPost):
     if node != None:
-        traverseInPostOrder_r(node.leftnode, list)
-        traverseInPostOrder_r(node.rightnode, list)
-        List.add(list, node.value)
+        traverseInPostOrder_r(node.leftnode, listPost)
+        traverseInPostOrder_r(node.rightnode, listPost)
+        List.add(listPost, node.value)
 
 def traverseInPostOrder(tree : BinaryTree):
-    list : List.LinkedList = List.LinkedList
+    listPost : List.LinkedList = List.LinkedList()
     if tree. root == None:
         return None
     else:
-        traverseInPostOrder_r(tree.root, list)
-        List.invertList(list)
-        return list
+        traverseInPostOrder_r(tree.root, listPost)
+        List.invertList(listPost)
+        return listPost
+
+"""----------------------------------------------------------------------------------------------------------"""
+
+def traverseInPreOrder_r(node : BinaryTreeNode, listPre):
+    if node != None:
+        traverseInPreOrder_r(node.rightnode, listPre)
+        if node != tree.root:
+            List.add(listPre, node.value)
+        traverseInPreOrder_r(node.leftnode, listPre)
+        
+def traverseInPreOrder(tree : BinaryTree):
+    listPre : List.LinkedList = List.LinkedList()
+    if tree. root == None:
+        return None
+    else:
+        traverseInPreOrder_r(tree.root, listPre)
+        List.add(listPre, tree.root.value)
+        List.invertList(listPre)
+        return listPre
+
+"""----------------------------------------------------------------------------------------------------------"""
+
+"""traverseBreadFirst(B)
+Descripción: Recorre un árbol binario en modo primero anchura/amplitud
+Entrada: El árbol binario (BinaryTree)
+Salida: Devuelve una lista (LinkedList) con los elementos del árbol
+ordenados de acuerdo al modo primero en amplitud. Devuelve None si el
+árbol está vacío."""
+
+def traverseBreadFirst_aux(aux_queue, current):
+    if List.search(aux_queue, current.value) == None:
+        Q.enqueue(aux_queue, current.value)
+    if current.leftnode != None and List.search(aux_queue, current.leftnode.value) == None:
+        Q.enqueue(aux_queue, current.leftnode.value)
+        traverseBreadFirst_aux(aux_queue, current.leftnode)
+    if current.rightnode != None and List.search(aux_queue, current.rightnode.value) == None:
+        Q.enqueue(aux_queue, current.rightnode.value)
+        traverseBreadFirst_aux(aux_queue, current.rightnode)
+
+def traverseBreadFirst(tree : BinaryTree):
+    aux_queue = Q.LinkedList()
+    current : BinaryTreeNode = tree.root
+    if current != None:
+        while List.lengthList(aux_queue) != treeSize(tree): 
+            traverseBreadFirst_aux(aux_queue, current)
+            return aux_queue
 
 """----------------------------------------------------------------------------------------------------------"""
 
@@ -355,6 +402,18 @@ def search_key (tree : BinaryTree, key : int):
     else:
         return search_key_r(tree.root, key)
     
+"""----------------------------------------------------------------------------------------------------------"""
+
+def treeSize_r(current: BinaryTreeNode):
+    if current is None:
+        return 0
+    return 1 + treeSize_r(current.leftnode) + treeSize_r(current.rightnode)
+
+def treeSize(tree: BinaryTree):
+    if tree.root is None:
+        return 0
+    return treeSize_r(tree.root)
+
 """----------------------------------------------------------------------------------------------------------"""
         
 # Crear el arbol
@@ -434,15 +493,5 @@ def print_tree(node : BinaryTreeNode, level = 0, prefix = ""):
 
 print_tree(tree.root)
 print("-------------------------------------------------------")
-insert(tree, "Z", 26)
-print_tree(tree.root)
-print("-------------------------------------------------------")
-insert(tree, "B", 2)
-print_tree(tree.root)
-print("-------------------------------------------------------")
-insert(tree, "E", 5)
-print_tree(tree.root)
-print("-------------------------------------------------------")
-insert(tree, "O", 15)
-print_tree(tree.root)
-print("-------------------------------------------------------")
+queue = traverseBreadFirst(tree)
+List.showList(queue)
