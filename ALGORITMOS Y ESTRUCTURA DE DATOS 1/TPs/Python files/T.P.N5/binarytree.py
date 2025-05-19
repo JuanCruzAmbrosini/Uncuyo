@@ -358,30 +358,22 @@ def traverseInPreOrder(tree : BinaryTree):
 
 """----------------------------------------------------------------------------------------------------------"""
 
-"""traverseBreadFirst(B)
-Descripción: Recorre un árbol binario en modo primero anchura/amplitud
-Entrada: El árbol binario (BinaryTree)
-Salida: Devuelve una lista (LinkedList) con los elementos del árbol
-ordenados de acuerdo al modo primero en amplitud. Devuelve None si el
-árbol está vacío."""
-
-def traverseBreadFirst_aux(aux_queue, current):
-    if List.search(aux_queue, current.value) == None:
-        Q.enqueue(aux_queue, current.value)
-    if current.leftnode != None and List.search(aux_queue, current.leftnode.value) == None:
-        Q.enqueue(aux_queue, current.leftnode.value)
-        traverseBreadFirst_aux(aux_queue, current.leftnode)
-    if current.rightnode != None and List.search(aux_queue, current.rightnode.value) == None:
-        Q.enqueue(aux_queue, current.rightnode.value)
-        traverseBreadFirst_aux(aux_queue, current.rightnode)
-
-def traverseBreadFirst(tree : BinaryTree):
+def traverseBreadFirst(tree: BinaryTree):
+    if tree.root is None:
+        return None
+    result = List.LinkedList()
     aux_queue = Q.LinkedList()
-    current : BinaryTreeNode = tree.root
-    if current != None:
-        while List.lengthList(aux_queue) != treeSize(tree): 
-            traverseBreadFirst_aux(aux_queue, current)
-            return aux_queue
+    Q.enqueue(aux_queue, tree.root)
+    while aux_queue.head != None:
+        current = Q.dequeue(aux_queue)
+        if current is not None:
+            List.add(result, current.value)
+            if current.leftnode is not None:
+                Q.enqueue(aux_queue, current.leftnode)
+            if current.rightnode is not None:
+                Q.enqueue(aux_queue, current.rightnode)            
+    List.invertList(result)
+    return result
 
 """----------------------------------------------------------------------------------------------------------"""
 
