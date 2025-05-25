@@ -322,31 +322,6 @@ def traverseInOrder(tree : BinaryTree,):
             
 """----------------------------------------------------------------------------------------------------------"""
 
-def traverseInOrderKey_r(current : BinaryTreeNode, list : List.LinkedList):
-    succesor = search_inorder_succesor(current)
-    if succesor == None:
-        return list
-    else:
-        List.add(list, succesor.key)
-        return traverseInOrderKey_r(succesor, list)
-    
-
-def traverseInOrderKey(tree : BinaryTree,):
-    if (tree.root == None): 
-        return None
-    else:
-        list = List.LinkedList()
-        #BUSCAMOS EL NODO CON LA KEY MÁS CHICA
-        start : BinaryTreeNode = tree.root
-        while start.leftnode != None:
-            start = start.leftnode
-        List.add(list, start.key)
-        result = traverseInOrderKey_r(start, list)
-        List.invertList(result)
-        return result
-            
-"""----------------------------------------------------------------------------------------------------------"""
-
 def traverseInPostOrder_r(node : BinaryTreeNode, listPost):
     if node != None:
         traverseInPostOrder_r(node.leftnode, listPost)
@@ -508,3 +483,7 @@ def print_tree(node : BinaryTreeNode, level = 0, prefix = ""):
 
 """----------------------------------------------------------------------------------------------------------"""
 
+print_tree(tree.root)
+print("-------------------------------------------------------")
+queue = traverseBreadFirst(tree)
+List.showList(queue)
