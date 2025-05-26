@@ -24,26 +24,37 @@ def bubbleSort(list : LinkedList):
 def selectionSort(list : LinkedList):
     minValue = None
     if not isSorted(list):
-        current : Node = list.head
         for i in range(0, lengthList(list)):
-            minValue = access(list, i)
-            current = search
-            while current != None:
-                if minValue > current.value:
+            index = 0
+            current = searchNodeIndex(list, i)
+            print(current.value)
+            minValue = current.value
+            while current != None :
+                value = current.value
+                if minValue > value:
                     minValue = current.value
+                    minpos = index
+                index += 1
                 current = current.nextNode
-            delete(list, minValue)
+            delete_ñpoairtion(list, minpos)
             insert(list, minValue, i)
-
+            showList(list)
 """----------------------------------------------------------------------------------------------------------""" 
 
+#delete position
+def delete_ñpoairtion(L,position):
+    current = L.head
+    for i in range(position-1):
+        current = current.nextNode
+        
+    current.nextNode = current.nextNode.nextNode
 # Crear la lista enlazada
 list = LinkedList()
 
 # Agregar elementos desordenados (hardcodeado)
 add(list, 14)
 add(list, 60)
-add(list, 31)
+add(list, 5)
 add(list, 76)
 add(list, 5)
 add(list, 23)

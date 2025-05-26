@@ -40,6 +40,18 @@ def search(list, element):
     
 """---------------------------------------------------------------------------------------------"""
 
+def searchNodeIndex(list, index):
+    counter = 0
+    current_node = list.head
+    while current_node is not None:
+        if counter == index:
+            return current_node
+        counter += 1
+        current_node = current_node.nextNode
+    return None  # índice fuera de rango
+    
+"""---------------------------------------------------------------------------------------------"""
+
 #Orden de complejidad: O(n)
 #Orden de complejidad arreglo: O(n)
 
