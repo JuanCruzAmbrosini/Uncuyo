@@ -25,7 +25,7 @@ def add(lista, elemento):
 #Orden de complejidad: O(n)
 #Orden de complejidad arreglo: O(n)
 
-def search(list, element) -> int:
+def search(list, element):
     exist = False
     counter = 0
     current_node = list.head
@@ -40,7 +40,7 @@ def search(list, element) -> int:
     
 """---------------------------------------------------------------------------------------------"""
 
-def searchNode(list, node) -> int:
+def searchNode(list, node):
     exist = False
     counter = 0
     current_node = list.head
@@ -55,7 +55,7 @@ def searchNode(list, node) -> int:
     
 """---------------------------------------------------------------------------------------------"""
 
-def searchNodeIndex(list, index) -> Node:
+def searchNodeIndex(list, index):
     counter = 0
     current_node = list.head
     while current_node is not None:
