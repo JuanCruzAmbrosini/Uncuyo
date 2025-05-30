@@ -46,6 +46,50 @@ def quickSort(list : LinkedList) -> LinkedList :
 
 """---------------------------------------------------------------------------------------------"""
 
+def mergeSort(list : LinkedList) :
+
+    if list.head.nextNode == None or list.head == None:
+        
+        return list
+    
+    else:
+
+        l1, l2 = splitList(list)
+        mergedList1 = mergeSort(l1)
+        mergedList2 = mergeSort(l2)
+
+        return merge(mergedList1, mergedList2)
+
+"""----  ----  ----  ----  ----  ----  ----  ----  ----  ----  ----  ----  ----  ----  ----  ----"""
+
+def merge(list1 : LinkedList, list2 : LinkedList) :
+
+    mergedList = LinkedList()
+    currentL1 : Node = list1.head
+    currentL2 : Node = list2.head
+
+    while(currentL1 != None and currentL2 != None):
+        if (currentL1.value <= currentL2.value):
+            add(mergedList, currentL1.value)
+            currentL1 = currentL1.nextNode
+        else:
+            add(mergedList, currentL2.value)
+            currentL2 = currentL2.nextNode
+
+    while currentL1 != None :
+        add(mergedList, currentL1.value)
+        currentL1 = currentL1.nextNode
+
+    while currentL2 != None :
+        add(mergedList, currentL2.value)
+        currentL2 = currentL2.nextNode
+
+    invertList(mergedList)
+
+    return mergedList 
+
+"""---------------------------------------------------------------------------------------------"""
+
 # Hardcoding an unordered linked list with 10 elements without using 'add'
 list = LinkedList()
 
@@ -92,4 +136,4 @@ node4.nextNode = node9       # 1 -> 4
 node9.nextNode = node6       # 4 -> 10
 
 showList(list)
-showList(quickSort(list))
+showList(mergeSort(list))

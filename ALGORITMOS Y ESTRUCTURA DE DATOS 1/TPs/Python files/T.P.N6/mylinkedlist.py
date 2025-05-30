@@ -247,6 +247,33 @@ def insertInOrder(list : LinkedList, element):
                 break
             current = current.nextNode
 
+"""---------------------------------------------------------------------------------------------"""
 
+def splitList(list : LinkedList) :
+    current : Node = list.head
+    counter = 0
+    half1 = LinkedList()
+    half2 = LinkedList()
+    while(current != None):
+        if (counter % 2 == 0):
+            add(half1, current.value)
+        else:
+            add(half2, current.value)
+        counter += 1
+        current = current.nextNode
+    return half1, half2
 
+"""---------------------------------------------------------------------------------------------"""
 
+def addLast(list, value):
+    new_node = Node()
+    new_node.value = value
+    new_node.nextNode = None
+
+    if list.head is None:
+        list.head = new_node
+    else:
+        current = list.head
+        while current.nextNode is not None:
+            current = current.nextNode
+        current.nextNode = new_node
