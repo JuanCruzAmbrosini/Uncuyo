@@ -158,34 +158,6 @@ def access(list, index):
 
 """---------------------------------------------------------------------------------------------"""
 
-def move(list : LinkedList, pos_from, pos_to):
-    length = lengthList(list)
-    if list.head == None: 
-        return None
-    elif (pos_from < 0 or pos_from > length - 1) or (pos_to < 0 or pos_to > length - 1):
-        return None
-    else:
-        if pos_from != pos_to:
-            current = list.head
-            prev_node = None
-            aux_node = None
-            counter = 0
-            while current != None:
-                if counter == pos_from :
-                    aux_node = current
-                    if prev_node == None :
-                        list.head = current.nextNode
-                    else:
-                        prev_node.nextNode = current.nextNode
-                    break
-                counter = counter + 1
-                prev_node = current
-                current = current.nextNode
-            insert(list, aux_node.value, pos_to)
-        
-        
-"""---------------------------------------------------------------------------------------------"""
-
 #Orden de complejidad: O(n)
 #Orden de complejidad arreglo: O(n)
 
@@ -277,3 +249,17 @@ def addLast(list, value):
         while current.nextNode is not None:
             current = current.nextNode
         current.nextNode = new_node
+
+"""---------------------------------------------------------------------------------------------"""
+
+def swap (list : LinkedList, pos_from, pos_to):
+
+    length = lengthList(list)
+    if list.head == None: 
+        return None
+    elif (pos_from < 0 or pos_from > length - 1) or (pos_to < 0 or pos_to > length - 1):
+        return None
+    else:
+        nodeA = searchNodeIndex(list, pos_from)
+        nodeB = searchNodeIndex(list, pos_to)
+        nodeA.value, nodeB.value = nodeB.value, nodeA.value

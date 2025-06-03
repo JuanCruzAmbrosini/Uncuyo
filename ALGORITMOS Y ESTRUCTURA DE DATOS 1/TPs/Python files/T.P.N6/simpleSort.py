@@ -32,7 +32,7 @@ def selectionSort(list : LinkedList):
                     minNode = current
                 current = current.nextNode
             minValueIndex = searchNode(list, minNode)
-        move(list, minValueIndex, i)
+            swap(list, minValueIndex, i)
     else: 
         print("La lista ya está ordenada")
 
@@ -65,7 +65,7 @@ add(list, 17)
 add(list, 42)
 
 showList(list)
-print("Insert sort: ")
+print("Selection sort: ")
 print("-------------------------------------------------------------------")
-insertSort(list)
+selectionSort(list)
 showList(list)

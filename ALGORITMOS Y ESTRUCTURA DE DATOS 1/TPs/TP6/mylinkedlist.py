@@ -25,7 +25,7 @@ def add(lista, elemento):
 #Orden de complejidad: O(n)
 #Orden de complejidad arreglo: O(n)
 
-def search(list, element):
+def search(list, element) -> int:
     exist = False
     counter = 0
     current_node = list.head
@@ -40,7 +40,7 @@ def search(list, element):
     
 """---------------------------------------------------------------------------------------------"""
 
-def searchNode(list, node):
+def searchNode(list, node) -> int:
     exist = False
     counter = 0
     current_node = list.head
@@ -55,7 +55,7 @@ def searchNode(list, node):
     
 """---------------------------------------------------------------------------------------------"""
 
-def searchNodeIndex(list, index):
+def searchNodeIndex(list, index) -> Node:
     counter = 0
     current_node = list.head
     while current_node is not None:
@@ -158,34 +158,6 @@ def access(list, index):
 
 """---------------------------------------------------------------------------------------------"""
 
-def move(list : LinkedList, pos_from, pos_to):
-    length = lengthList(list)
-    if list.head == None: 
-        return None
-    elif (pos_from < 0 or pos_from > length - 1) or (pos_to < 0 or pos_to > length - 1):
-        return None
-    else:
-        if pos_from != pos_to:
-            current = list.head
-            prev_node = None
-            aux_node = None
-            counter = 0
-            while current != None:
-                if counter == pos_from :
-                    aux_node = current
-                    if prev_node == None :
-                        list.head = current.nextNode
-                    else:
-                        prev_node.nextNode = current.nextNode
-                    break
-                counter = counter + 1
-                prev_node = current
-                current = current.nextNode
-            insert(list, aux_node.value, pos_to)
-        
-        
-"""---------------------------------------------------------------------------------------------"""
-
 #Orden de complejidad: O(n)
 #Orden de complejidad arreglo: O(n)
 
@@ -247,6 +219,47 @@ def insertInOrder(list : LinkedList, element):
                 break
             current = current.nextNode
 
+"""---------------------------------------------------------------------------------------------"""
 
+def splitList(list : LinkedList) :
+    current : Node = list.head
+    counter = 0
+    half1 = LinkedList()
+    half2 = LinkedList()
+    while(current != None):
+        if (counter % 2 == 0):
+            add(half1, current.value)
+        else:
+            add(half2, current.value)
+        counter += 1
+        current = current.nextNode
+    return half1, half2
 
+"""---------------------------------------------------------------------------------------------"""
 
+def addLast(list, value):
+    new_node = Node()
+    new_node.value = value
+    new_node.nextNode = None
+
+    if list.head is None:
+        list.head = new_node
+    else:
+        current = list.head
+        while current.nextNode is not None:
+            current = current.nextNode
+        current.nextNode = new_node
+
+"""---------------------------------------------------------------------------------------------"""
+
+def swap (list : LinkedList, pos_from, pos_to):
+
+    length = lengthList(list)
+    if list.head == None: 
+        return None
+    elif (pos_from < 0 or pos_from > length - 1) or (pos_to < 0 or pos_to > length - 1):
+        return None
+    else:
+        nodeA = searchNodeIndex(list, pos_from)
+        nodeB = searchNodeIndex(list, pos_to)
+        nodeA.value, nodeB.value = nodeB.value, nodeA.value
