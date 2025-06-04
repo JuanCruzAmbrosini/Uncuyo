@@ -355,7 +355,7 @@ def traverseInPostOrder_r(node : BinaryTreeNode, listPost):
 
 def traverseInPostOrder(tree : BinaryTree):
     listPost : List.LinkedList = List.LinkedList()
-    if tree. root == None:
+    if tree.root == None:
         return None
     else:
         traverseInPostOrder_r(tree.root, listPost)
