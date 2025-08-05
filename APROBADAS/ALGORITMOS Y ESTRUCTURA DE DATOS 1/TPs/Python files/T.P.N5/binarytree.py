@@ -37,40 +37,8 @@ def search (tree : BinaryTree, element : int):
         
 """----------------------------------------------------------------------------------------------------------"""
 
-def insert_r(current : BinaryTreeNode, element, key):
-    if key < current.key:
-        if current.leftnode == None:
-            new_node = BinaryTreeNode()
-            new_node.key = key
-            new_node.value = element
-            new_node.parent = current
-            current.leftnode = new_node
-            return key
-        else : 
-            return insert_r(current.leftnode, element, key)
-    elif key > current.key:
-        if current.rightnode == None:
-            new_node = BinaryTreeNode()
-            new_node.key = key
-            new_node.value = element
-            new_node.parent = current
-            current.rightnode = new_node
-            return key
-        else : 
-            return insert_r(current.rightnode, element, key)
-    else:
-        return None
 
-def insert (tree : BinaryTree, element, key : int):
-        if tree.root == None:
-            new_root = BinaryTreeNode()
-            new_root.key = key
-            new_root.value = element
-            tree.root = new_root
-            return key
-        else:
-            current = tree.root
-            return insert_r(current, element, key)
+
 
 """----------------------------------------------------------------------------------------------------------"""
 
@@ -311,7 +279,7 @@ def traverseInOrder(tree : BinaryTree,):
         return None
     else:
         list = List.LinkedList()
-        #BUSCAMOS EL NODO CON LA KEY MÁS CHICA
+        #BUSCAMOS EL NODO CON LA KEY MAS CHICA
         start : BinaryTreeNode = tree.root
         while start.leftnode != None:
             start = start.leftnode
@@ -355,7 +323,7 @@ def traverseInPostOrder_r(node : BinaryTreeNode, listPost):
 
 def traverseInPostOrder(tree : BinaryTree):
     listPost : List.LinkedList = List.LinkedList()
-    if tree.root == None:
+    if tree. root == None:
         return None
     else:
         traverseInPostOrder_r(tree.root, listPost)
@@ -508,3 +476,8 @@ def print_tree(node : BinaryTreeNode, level = 0, prefix = ""):
 
 """----------------------------------------------------------------------------------------------------------"""
 
+print_tree(tree.root)
+inOrdenList = traverseInOrder(tree)
+List.showList(inOrdenList)
+traverseBreadFirstList = traverseBreadFirst(tree)
+List.showList(traverseBreadFirstList)
