@@ -1,4 +1,4 @@
-%Dada la funci�n f : R -> R en forma discreta, se busca determinar I =  1.1  f(x) 1.5.
+%Dada la funcion f : R -> R en forma discreta, se busca determinar I =  1.1  f(x) 1.5.
 %(1.1, 3.0042)  (1.3, 3.2) (1.5, 4.4817)
 
 function MetodoTrapeciosMultiples
@@ -38,6 +38,25 @@ function MetodoTrapeciosMultiples
     in = (h/2) * ( y(1) + 2 * sumY + y(length(y)));
 
     disp('El valor aproximado de la integral es: '), in
+
+    % --------------------------
+    % GRAFICO DEL MÉTODO
+    % --------------------------
+    figure;
+    plot(x, y, 'o-b', 'LineWidth', 2, 'MarkerSize', 8);
+    hold on;
+
+    for i = 1:length(x)-1
+      xx = [x(i), x(i), x(i+1), x(i+1)];
+      yy = [0, y(i), y(i+1), 0];
+      fill(xx, yy, 'cyan', 'FaceAlpha', 0.3, 'EdgeColor', 'none');
+    endfor
+
+    xlabel('x');
+    ylabel('f(x)');
+    title('Método de Trapecios Múltiples');
+    grid on;
+    legend('Puntos','Área aproximada');
 
    else
 
