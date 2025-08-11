@@ -37,7 +37,30 @@ def search (tree : BinaryTree, element : int):
         
 """----------------------------------------------------------------------------------------------------------"""
 
-
+def insert(tree: BinaryTree, key: int, value=None):
+    new_node = BinaryTreeNode()
+    new_node.key = key
+    new_node.value = value
+    
+    if tree.root is None:
+        tree.root = new_node
+        return
+    
+    current = tree.root
+    parent = None
+    
+    while current is not None:
+        parent = current
+        if key < current.key:
+            current = current.leftnode
+        else:
+            current = current.rightnode
+    
+    new_node.parent = parent
+    if key < parent.key:
+        parent.leftnode = new_node
+    else:
+        parent.rightnode = new_node
 
 
 """----------------------------------------------------------------------------------------------------------"""
