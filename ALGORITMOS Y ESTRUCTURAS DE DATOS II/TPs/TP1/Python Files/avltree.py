@@ -1,5 +1,6 @@
 class AVL_node:
-    def __init__(self, key, bf=0, value = None):
+    def __init__(self, key, bf=0, value = None, height = 0):
+        self.height = height
         self.value = value
         self.key = key
         self.bf = bf
@@ -19,6 +20,7 @@ def rotate_left_aux(tree : AVL_tree, node : AVL_node):
     #Caso de que node no tenga padre
     if parent == None:
         tree.root = new_root
+        new_root.parent = None
     else:
     #Caso de que node sea un hijo derecho
         if parent.right_node == node:
@@ -41,7 +43,8 @@ def rotate_left_aux(tree : AVL_tree, node : AVL_node):
     new_root.left_node = node
     node.parent = new_root
 
-    calculate_balance_r(new_root)
+    calculate_bf_height(node)
+    calculate_bf_height(new_root)
     
     return new_root
 """ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - """  
@@ -61,6 +64,7 @@ def rotate_right_aux(tree : AVL_tree, node : AVL_node):
     #Caso de que node no tenga padre
     if parent == None:
         tree.root = new_root
+        new_root.parent = None
     else:
     #Caso de que node sea un hijo derecho
         if parent.right_node == node:
@@ -83,10 +87,10 @@ def rotate_right_aux(tree : AVL_tree, node : AVL_node):
     new_root.right_node = node
     node.parent = new_root
 
-    calculate_balance_r(new_root)
-    
-    return new_root
+    calculate_bf_height(node)
+    calculate_bf_height(new_root)
 
+    return new_root
 """ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - """    
 
 def rotate_right(tree : AVL_tree, node : AVL_node):
@@ -97,55 +101,41 @@ def rotate_right(tree : AVL_tree, node : AVL_node):
 
 """--------------------------------------------------------------------------------------------------------------------------------------"""  
 
-def calculate_balance(tree : AVL_tree):
+def calculate_bf_height (node : AVL_node) :
 
-    if tree.root == None:
-        print("El arbol no tiene raiz.")
-        return 
-    else :
-        calculate_balance_r(tree.root)
+    if node is not None:
+
+        left_h = node.left_node.height if node.left_node else -1
+        right_h = node.right_node.height if node.right_node else -1
+
+        node.height = 1 + max(left_h, right_h)
+        node.bf = left_h - right_h
         
-""" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - """   
-
-def calculate_balance_r(current : AVL_node):
-
-    if current == None:
-        return 0 
-    
-    left_height = calculate_balance_r(current.left_node)
-    right_height = calculate_balance_r(current.right_node)
-    current.bf = left_height - right_height
-
-    return 1 + max(left_height, right_height)
-    
-"""--------------------------------------------------------------------------------------------------------------------------------------"""    
-
-def rebalance(tree : AVL_tree):
-
-    rebalance_r(tree, tree.root)
-
-""" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - """ 
-
-def rebalance_r(tree : AVL_tree, node : AVL_node):
-
-    if node == None:
-        return
-    
-    flag = True
-    
-    rebalance_r(tree, node.left_node)
-    rebalance_r(tree, node.right_node)
-
-    calculate_balance_r(node)
-
-    if node.bf < -1 :
-        rotate_left(tree, node)
-    
-    if node.bf > 1:
-        rotate_right(tree, node)
-
-    
 """--------------------------------------------------------------------------------------------------------------------------------------""" 
+
+def rebalance(tree : AVL_tree, node : AVL_node):
+
+    flag = False
+    
+    while node != None :
+        calculate_bf_height(node)
+
+        if node == tree.root : 
+            flag = True
+
+        if node.bf > 1 : 
+            rotate_right(tree, node)
+        if node.bf < -1 :
+            rotate_left(tree, node)
+
+        calculate_bf_height(node)
+
+        if flag : 
+            break
+
+        node = node.parent
+
+"""--------------------------------------------------------------------------------------------------------------------------------------"""
 
 def search_key_r(current : AVL_node, key):
     if current == None:
@@ -180,317 +170,249 @@ def search_inorder_succesor(node : AVL_node):
 
 """--------------------------------------------------------------------------------------------------------------------------------------""" 
 
-def insert (tree : AVL_tree, key : int, value):
+def insert_r(tree, current : AVL_node, element, key):
+    if key < current.key:
+        if current.left_node == None:
+            new_node = AVL_node(key, value = element)
+            new_node.parent = current
+            current.left_node = new_node
+            calculate_bf_height(new_node)
+            rebalance(tree, new_node)
+            return key
+        else : 
+            return insert_r(tree, current.left_node, element, key)
+    elif key > current.key:
+        if current.right_node == None:
+            new_node = AVL_node(key, value = element)
+            new_node.parent = current
+            current.right_node = new_node
+            calculate_bf_height(new_node)
+            rebalance(tree, new_node)
+            return key
+        else : 
+            return insert_r(tree, current.right_node, element, key)
+    else:
+        return None
 
-    node : AVL_node = AVL_node(key, value = value)
-    parent : AVL_node = None
-    #Caso de que el arbol no tenga raiz
-    if tree.root == None:
-        tree.root = node
-        return key
-    
-    #Caso de que si tenga raiz
-    current : AVL_node = tree.root
-    while current != None:
-
-        parent = current
-
-        if key == current.key:
-            return "Err"
-        
-        elif key > current.key :
-            current = current.right_node
-
+def insert (tree : AVL_tree, element, key : int):
+        if tree.root == None:
+            new_root = AVL_node
+            new_root.key = key
+            new_root.value = element
+            tree.root = new_root
+            return key
         else:
-            current = current.left_node
-        
-    if parent.key < key : 
-        parent.right_node = node
-        node.parent = parent
+            current = tree.root
+            return insert_r(tree, current, element, key)
 
-    else:
-        parent.left_node = node
-        node.parent = parent
+"""--------------------------------------------------------------------------------------------------------------------------------------"""        
 
-    calculate_balance(tree)
-    rebalance(tree)
+def delete (tree : AVL_tree, key : int = 0):
 
-    return key
-
-"""--------------------------------------------------------------------------------------------------------------------------------------""" 
-
-def delete_key(tree : AVL_tree, key : int  = 0):
-
-    key = int(input("Ingrese la llave "))
-
-    #Buscamos el nodo a eliminar
-    d_node = search_key(tree, key)
-
-    if d_node != None:
-
-        ret_key = d_node.key
-
-        #Caso de que el nodo a eliminar no tenga hijos
-        if d_node.left_node == None and d_node.right_node == None :
-
-            #Raiz
-            if tree.root == d_node:
-                tree.root = None
-                rebalance(tree)
-                return ret_key
-            
-            parent : AVL_node = d_node.parent
-
-            #Hijo izquierdo
-            if parent.key > d_node.key:
-                parent.left_node = None
-                d_node.parent = None
-                rebalance(tree)
-                return ret_key
-            
-            #Hijo derecho
-            else:
-                parent.right_node = None
-                d_node.parent = None
-                rebalance(tree)
-                return ret_key
-
-        # Caso de que el nodo a eliminar tenga un solo hijo (izquierdo)
-        if d_node.left_node and d_node.right_node == None:
-
-            # Raíz
-            if tree.root == d_node:
-                tree.root = d_node.left_node
-                d_node.left_node.parent = None
-            else:
-                parent: AVL_node = d_node.parent
-
-                # Seleccionar si va a left_node o right_node
-                if parent.key > d_node.key:
-                    parent.left_node = d_node.left_node
-                else:
-                    parent.right_node = d_node.left_node
-
-                d_node.left_node.parent = parent
-
-            # Limpieza de referencias
-            d_node.left_node = None
-            d_node.parent = None
-
-            rebalance(tree)
-
-            return ret_key
-        
-        # Caso de que el nodo a eliminar tenga un solo hijo (derecho)
-        if d_node.left_node == None and d_node.right_node :
-
-            # Raíz
-            if tree.root == d_node:
-                tree.root = d_node.right_node
-                d_node.right_node.parent = None
-            else:
-
-                parent: AVL_node = d_node.parent
-
-                # Seleccionar si va a left_node o right_node
-                if parent.key > d_node.key:
-                    parent.left_node = d_node.right_node
-                else:
-                    parent.right_node = d_node.right_node
-
-                d_node.right_node.parent = parent
-
-            # Limpieza de referencias
-            d_node.right_node = None
-            d_node.parent = None
-
-            rebalance(tree)
-            return ret_key
-        
-        # Caso de que el nodo a eliminar tenga dos hijos
-
-        if d_node.right_node and d_node.left_node :
-
-            inorder_node : AVL_node = search_inorder_succesor(d_node)
-            succ_parent : AVL_node = inorder_node.parent
-
-
-            #Hijo izquierdo
-            if succ_parent.key > inorder_node.key and succ_parent:
-                succ_parent.left_node = None
-                inorder_node.parent = None
-            
-            #Hijo derecho
-            else:
-                succ_parent.right_node = None
-                inorder_node.parent = None
-
-            if d_node.parent == None:
-                tree.root = inorder_node
-                inorder_node.left_node = d_node.left_node
-                inorder_node.right_node = d_node.right_node
-                if inorder_node.left_node != None:
-                    inorder_node.left_node.parent = inorder_node
-                if inorder_node.right_node != None:
-                    inorder_node.right_node.parent = inorder_node
-                d_node = None
-                return ret_key
-            else:
-                if inorder_node == d_node.right_node:
-                    if d_node.parent.left_node == d_node:
-                        d_node.parent.left_node = inorder_node
-                    else:
-                        d_node.parent.right_node = inorder_node
-                    inorder_node.parent = d_node.parent
-                    inorder_node.left_node = d_node.left_node
-                    if inorder_node.left_node != None:
-                        inorder_node.left_node.parent = inorder_node
-                    d_node.left_node = d_node.right_node = d_node.parent = None
-                else:
-                    inorder_node.right_node = d_node.right_node
-                    inorder_node.left_node = d_node.left_node
-                    inorder_node.parent = d_node.parent
-                    if d_node.parent.left_node == d_node:
-                        d_node.parent.left_node = inorder_node
-                    if d_node.parent.right_node == d_node:
-                        d_node.parent.right_node = inorder_node
-                    d_node = None
-            rebalance(tree)
-            return ret_key
-    else:
-        return "Err"
-"""--------------------------------------------------------------------------------------------------------------------------------------""" 
-# ==== Funcion para imprimir el arbol (en orden) ====
-def print_tree(node : AVL_node, level = 0, prefix = ""):
-    if node != None : 
-        print_tree(node.right_node, level + 1, prefix + "      ")
-        print(prefix + "|--" + str(node.value) + "." + str(node.key) + "." + str(node.bf))
-        print_tree(node.left_node, level + 1, prefix + "      ")
-
-tree = AVL_tree()
-
-n50 = AVL_node(50, bf=2)
-n40 = AVL_node(40, bf=1)
-n45 = AVL_node(45, bf=0)
-n30 = AVL_node(30, bf=1)
-n42 = AVL_node(42, bf=0)
-n20 = AVL_node(20, bf=0)
-n35 = AVL_node(35, bf=0)
-n10 = AVL_node(10, bf=0)
-
-tree.root = n50
-
-# Hijo izquierdo y derecho de 50
-n50.left_node = n40
-n40.parent = n50
-
-n50.right_node = n45
-n45.parent = n50
-
-# Hijos de 40
-n40.left_node = n30
-n30.parent = n40
-
-n40.right_node = n42
-n42.parent = n40
-
-# Hijos de 30
-n30.left_node = n20
-n20.parent = n30
-
-n30.right_node = n35
-n35.parent = n30
-
-# Hijo izquierdo de 20
-n20.left_node = n10
-n10.parent = n20
-
-print("--------------------------------------------------")
-print("Arbol base")
-print_tree(tree.root)
-
-print("--------------------------------------------------")
-print("Prueba delete")
-rebalance(tree)
-delete_key(tree, 30)
-print_tree(tree.root)
-
-
-
-"""    # Buscamos el nodo a eliminar
-    d_node = search_key(tree, key)
+    d_node : AVL_node = search_key(tree, key)
 
     if d_node is None:
         return "Err"
-
-    ret_key = d_node.key
-    parent = d_node.parent
-
-    # Caso 1: Nodo sin hijos
+    
+    #Caso sin hijos
     if d_node.left_node is None and d_node.right_node is None:
 
+        parent = d_node.parent
+
         if parent is None:
-            # El nodo es la raíz y es hoja
             tree.root = None
-        else:
-            if parent.left_node == d_node:
-                parent.left_node = None
-            else:
-                parent.right_node = None
-            d_node.parent = None
 
-        rebalance(tree)
-        return ret_key
+            return
 
-    # Caso 2: Nodo con un solo hijo
-    if d_node.left_node is None or d_node.right_node is None:
-        child = d_node.left_node if d_node.left_node else d_node.right_node
-        child.parent = parent
+        if parent.key > key:
+            d_node.parent.left_node = None
+        else :
+            d_node.parent.right_node = None
+        d_node.parent = None
+
+        calculate_bf_height(parent)
+        rebalance(tree, parent)
+
+        return
+
+    #Caso con un hijo izquierdo
+
+    if d_node.left_node is not None and d_node.right_node is None:
+        parent : AVL_node = d_node.parent
 
         if parent is None:
-            # El nodo es la raíz
-            tree.root = child
+            tree.root = d_node.left_node
+            d_node.left_node.parent = None
+            d_node.left_node = None
+
+            calculate_bf_height(tree.root)
+            rebalance(tree, tree.root)
+
+            return
+
+        if parent.key > key:
+            parent.left_node = d_node.left_node
         else:
-            if parent.left_node == d_node:
-                parent.left_node = child
-            else:
-                parent.right_node = child
+            parent.right_node = d_node.left_node
+        d_node.left_node.parent = parent
+        d_node.parent = None
+        d_node.left_node = None
+
+        calculate_bf_height(parent)
+        rebalance(tree, parent)
+
+        return
+
+    #Caso con un hijo derecho
+    if d_node.left_node is None and d_node.right_node is not None:
+        parent : AVL_node = d_node.parent
+
+        if parent is None:
+            tree.root = d_node.right_node
+            d_node.right_node.parent = None
+            d_node.right_node = None
+
+            calculate_bf_height(tree.root)
+            rebalance(tree, tree.root)
+            
+            return
+        
+        if parent.key > key:
+            parent.left_node = d_node.right_node
+        else:
+            parent.right_node = d_node.right_node
+
+        d_node.right_node.parent = parent
+        d_node.parent = None
+        d_node.right_node = None
+
+        calculate_bf_height(parent)
+        rebalance(tree, parent)
+
+        return
+    
+    #Caso con 2 hijos: 
+    if d_node.right_node is not None and d_node.left_node is not None:
+
+        parent : AVL_node = d_node.parent
+        succ = search_inorder_succesor(d_node)
+        succ_parent : AVL_node = succ.parent
+        succ_child : AVL_node = succ.right_node
+
+        #Caso de que el succ sea el sucesor inmediato de d_node
+        if d_node.right_node == succ:
+
+            if parent:
+
+                if parent.key > key:
+                    parent.left_node = succ
+                else:
+                    parent.right_node = succ
+
+                succ.parent = d_node.parent
+
+            else: 
+
+                tree.root = succ
+                succ.parent = None
+
+            succ.left_node = d_node.left_node
+            succ.left_node.parent = succ
+        
+        else : 
+
+            if succ_child : 
+                
+                if succ_parent.right_node == succ:
+                    succ_parent.right_node = succ_child
+
+                elif succ_parent.left_node == succ:
+
+                    succ_parent.left_node = succ_child 
+                    succ_child.parent = succ_parent
+                    
+            if tree.root != d_node:
+
+                if parent.key > key:
+                    parent.left_node = succ
+                else:
+                    parent.right_node = succ
+
+                succ.parent = d_node.parent
+
+            else: 
+
+                tree.root = succ
+                succ.parent = None
+
+            succ.right_node = d_node.right_node
+            succ.left_node = d_node.left_node
+
+            succ.right_node.parent = succ
+            succ.left_node.parent = succ
+
+            succ_parent.left_node = None
 
         d_node.parent = None
         d_node.left_node = None
         d_node.right_node = None
 
-        rebalance(tree)
-        return ret_key
+        calculate_bf_height(succ)
+        rebalance(tree, succ)
 
-    # Caso 3: Nodo con dos hijos
-    # Encontrar sucesor inorder
-    inorder_node = search_inorder_succesor(d_node)
-    if inorder_node is None:
-        # Esto no debería pasar si tiene dos hijos
-        return "Err"
+        return
 
-    # Copiar clave y valor del sucesor al nodo a eliminar
-    d_node.key = inorder_node.key
-    d_node.value = inorder_node.value
+"""--------------------------------------------------------------------------------------------------------------------------------------"""     
 
-    # Eliminar el sucesor (que tiene 0 o 1 hijo)
-    # Importante: eliminar inorder_node desde su padre
-    succ_parent = inorder_node.parent
+# ==== Funcion para imprimir el arbol (en orden) ====
+def print_tree(node : AVL_node, level = 0, prefix = ""):
+    if node != None : 
+        print_tree(node.right_node, level + 1, prefix + "      ")
+        print(prefix + "|--" + str(node.value) + "." + str(node.key) + "." + str(node.bf) + ".L" + str(node.height))
+        print_tree(node.left_node, level + 1, prefix + "      ")
 
-    # Caso sucesor es hijo izquierdo o derecho
-    if succ_parent.left_node == inorder_node:
-        succ_parent.left_node = inorder_node.right_node
-        if inorder_node.right_node:
-            inorder_node.right_node.parent = succ_parent
-    else:
-        succ_parent.right_node = inorder_node.right_node
-        if inorder_node.right_node:
-            inorder_node.right_node.parent = succ_parent
 
-    inorder_node.parent = None
-    inorder_node.left_node = None
-    inorder_node.right_node = None
+tree = AVL_tree()
 
-    rebalance(tree)
-    return ret_key"""
+# Crear nodos con value (letra), key, bf y height hardcodeados (AVL válido)
+
+n20 = AVL_node(20, bf=0, value='T', height=2)
+n10 = AVL_node(10, bf=0, value='J', height=1)
+n30 = AVL_node(30, bf=0, value='C', height=1)
+n5  = AVL_node(5,  bf=0, value='E', height=0)
+n15 = AVL_node(15, bf=0, value='O', height=0)
+n25 = AVL_node(25, bf=0, value='Y', height=0)
+n35 = AVL_node(35, bf=0, value='Z', height=0)
+
+# Conexiones
+
+tree.root = n20
+
+n20.left_node = n10
+n10.parent = n20
+
+n20.right_node = n30
+n30.parent = n20
+
+n10.left_node = n5
+n5.parent = n10
+
+n10.right_node = n15
+n15.parent = n10
+
+n30.left_node = n25
+n25.parent = n30
+
+n30.right_node = n35
+n35.parent = n30
+
+# Prueba 3: eliminar nodos en orden aleatorio para reequilibrios impredecibles
+print("--------------------------------------------------")
+print("Arbol base")
+print_tree(tree.root)
+
+for key in [20, 5, 30, 15, 25, 10, 35]:
+    print("--------------------------------------------------")
+    print("Prueba delete")
+    delete(tree, key)
+    print_tree(tree.root)
