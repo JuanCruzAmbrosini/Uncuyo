@@ -416,3 +416,35 @@ for key in [20, 5, 30, 15, 25, 10, 35]:
     print("Prueba delete")
     delete(tree, key)
     print_tree(tree.root)
+
+
+"""
+Ejercicio 6: 
+
+    a) F
+    b) T
+    c) F
+    d) T
+
+Ejercicio 7: 
+
+    Se calcula la altura del arbol A (log n) y del arbol B (log m). Se le resta la altura del arbol mas chico al arbol mas grande y le anexamos a x.
+
+    Si el árbol más grande es el arbol A: 
+        Añadimos x a la derecha del "subarbol superior de A". A la derecha de x, colocamos al arbol B y a la izquierda colocamos el "subarbol inferior" de A
+
+    Si el árbol más grande es el arbol B: 
+        Añadimos x a la izquierda del "subarbol superior de B". A la izquierda de x, colocamos al arbol A y a la derecha colocamos el "subarbol inferior" de B 
+
+Ejercicio 8: 
+
+    Optimalidad: existe un AVL con rama truncada de longitud ⌊h/2⌋
+
+    Construcción por “camino crítico” haciendo que, desde la raíz, en cada paso el subárbol por el que seguimos tenga la mayor altura posible y el hermano la menor compatible (diferencia 1), 
+    y recién cuando la altura del subárbol que seguimos baja a 1, hacemos que el nodo siguiente quede “incompleto” (le falte un hijo). Esa construcción respeta 
+    |bf| ≤ 1 en todos los nodos, y exactamente cuando se han dado 
+    d =⌊ℎ/2⌋ pasos aparece el primer nodo incompleto. (Intuición: estamos materializando la caída “máxima” de 2 alturas cada 2 niveles antes de permitir el faltante.)
+
+    Así, la cota es alcanzable.
+
+"""
