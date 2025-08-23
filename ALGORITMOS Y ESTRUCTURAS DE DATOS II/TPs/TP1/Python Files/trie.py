@@ -74,7 +74,8 @@ def search(trie : Trie ,word : str) :
           if not flag:
                return False
 
-     if counter == len(word): 
+
+     if counter == len(word) and current.isEndOfWord: 
          
           return True
      
@@ -84,7 +85,55 @@ def search(trie : Trie ,word : str) :
 
 """------------------------------------------------------------------------------------------------"""
 
+def delete(trie : Trie , word : str):
 
+     #Checkear si es parte de otra palabra
+     
+     current : TrieNode = trie.root
+     flag = False
+     counter = 0
+
+     for i in range (0, len(word)):
+
+          flag = False
+
+          for j in range(0, len(current.children)):
+                    
+               if word[i] == current.children[j].key:
+                          
+                    current = current.children[j]
+                    counter += 1
+
+                    if counter == len(word):
+                         flag = True 
+                    break
+
+          if flag: 
+               break
+
+     if flag :
+
+          if current.children : 
+
+               current.isEndOfWord = False
+
+          else : 
+
+               current.isEndOfWord = False
+
+               aux_flag = False
+
+               while len(current.parent.children) == 1:
+
+                  if current.parent.isEndOfWord : 
+                        current.parent.children.remove(current)
+                        aux_flag = True
+                        break
+                  
+                  current = current.parent
+                  
+               if not aux_flag: 
+                    current.parent.children.remove(current)
 
 """------------------------------------------------------------------------------------------------"""
 
@@ -113,20 +162,46 @@ insert(trie, "alas")
 insert(trie, "amor")
 insert(trie, "alto")
 insert(trie, "arca")
-insert(trie, "bebe")
+insert(trie, "bebo")
 insert(trie, "beso")
 insert(trie, "bicicleta")
 insert(trie, "bueno")
 insert(trie, "buenisimo")
 insert(trie, "casa")
-insert(trie, "diablo")
-insert(trie, "eco")
+insert(trie, "casamiento")
 print("---------------------------------------------------------------------------")
-insert(trie, "flash")
+print("=== Estado inicial ===")
 print_trie(trie.root)
-print("---------------------------------------------------------------------------")
-print(search(trie, "alas"))
-print(search(trie, "esteban"))
-print(search(trie, "eco"))
-print(search(trie, "casino"))
-print(search(trie, "casamiento"))
+
+# --- Búsquedas ---
+print("\n=== Búsquedas ===")
+print("alas:", search(trie, "alas"))
+print("bueno:", search(trie, "bueno"))
+print("casamiento:", search(trie, "casamiento"))
+print("alasa:", search(trie, "alasa"))
+print("buenazo:", search(trie, "buenazo"))
+print("cas:", search(trie, "cas"))
+
+# --- Borrados ---
+print("\n=== Borrado 'alas' (palabra hoja) ===")
+delete(trie, "alas")
+print_trie(trie.root)
+
+print("\n=== Borrado 'casa' (prefijo de otra) ===")
+delete(trie, "casa")
+print_trie(trie.root)
+
+print("\n=== Borrado 'casamiento' (última de la rama) ===")
+delete(trie, "casamiento")
+print_trie(trie.root)
+
+print("\n=== Borrado 'bueno' (deja 'buenisimo') ===")
+delete(trie, "bueno")
+print_trie(trie.root)
+
+print("\n=== Borrado 'perro' (no existe) ===")
+delete(trie, "perro")
+print_trie(trie.root)
+
+print("\n=== Estado final ===")
+print_trie(trie.root)
