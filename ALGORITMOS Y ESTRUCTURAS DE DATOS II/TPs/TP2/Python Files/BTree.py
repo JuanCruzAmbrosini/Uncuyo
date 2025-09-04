@@ -76,22 +76,43 @@ def insert (b_tree : BTree, key : int):
             else:
                insert_in_order_list(second, key)
             
-            new_node_a : BTreeNode = BTreeNode(t, True, first) 
-            new_node_b : BTreeNode = BTreeNode(t, True, second)
+            new_node_a : BTreeNode = BTreeNode(t, current.leaf, first) 
+            new_node_b : BTreeNode = BTreeNode(t, current.leaf, second)
+            
+            if not current.leaf:
+                mid = len(current.keys) // 2
+                new_node_a.children = current.children[:mid+1]
+                new_node_b.children = current.children[mid+1:]
+                for c in new_node_a.children:
+                    c.parent = new_node_a
+                for c in new_node_b.children:
+                    c.parent = new_node_b
+            
             if current.parent :
                 new_node_a.parent = current.parent
                 new_node_b.parent = current.parent
-                current.parent.children.append(new_node_a)
-                current.parent.children.append(new_node_b)
+                
                 current.parent.children.remove(current)
+                insert_in_order_node(current.parent.children, new_node_a)
+                insert_in_order_node(current.parent.children, new_node_b)
+                
                 
                 if len(new_node_a.parent.keys) < (2 * t) - 1 :
                     insert_in_order_list(new_node_a.parent.keys, mid_val)
                     return
-            
                 
-    
-
+                else:
+                    current = new_node_a.parent
+                    key = mid_val
+            
+            else:
+                new_root = BTreeNode(t, False, [mid_val])
+                new_root.children = [new_node_a, new_node_b]
+                new_node_a.parent = new_root
+                new_node_b.parent = new_root
+                b_tree.root = new_root
+                return
+                    
 """----------------------------------------------------------------"""
 
 def split (node : BTreeNode, t : int):
@@ -117,6 +138,26 @@ def insert_in_order_list(list : list, key):
             return 1
         
     list.append(key)
+
+"""----------------------------------------------------------------"""
+
+def insert_in_order_node(lst: list, node : BTreeNode): 
+    
+    sub_list_size = len(node.keys)
+    list_size = len(lst)
+    
+    if lst[0].keys[0] > node.keys[sub_list_size - 1] : 
+        lst.insert(0, node)
+        return 1
+    
+    if lst[- 1].keys[- 1] < node.keys[0]: 
+        lst.append(node)
+        return 1
+    
+    for i in range(1, list_size ):
+        if lst[i-1].keys[- 1] < node.keys[0] and lst[i].keys[0] > node.keys[- 1] : 
+            lst.insert(i, node)
+            return 1
 
 """----------------------------------------------------------------"""
 
@@ -157,8 +198,45 @@ def print_btree(node, prefix="", is_last=True):
 
 
 # Ejemplo de uso
-
+print("-------------------------------------------------------")
 print_btree(btree.root)
-insert(btree, 17)
+insert(btree, 0)
+print("-------------------------------------------------------")
+print_btree(btree.root)
+insert(btree, 9)
+print("-------------------------------------------------------")
+print_btree(btree.root)
 insert(btree, 18)
+print("-------------------------------------------------------")
 print_btree(btree.root)
+insert(btree, 35)
+print("-------------------------------------------------------")
+print_btree(btree.root)
+insert(btree, 1)
+print("-------------------------------------------------------")
+print_btree(btree.root)
+insert(btree, 2)
+print("-------------------------------------------------------")
+print_btree(btree.root)
+insert(btree, 3)
+print("-------------------------------------------------------")
+print_btree(btree.root)
+insert(btree, 23)
+print("-------------------------------------------------------")
+print_btree(btree.root)
+insert(btree, 21)
+print("-------------------------------------------------------")
+print_btree(btree.root)
+insert(btree, 51)
+print("-------------------------------------------------------")
+print_btree(btree.root)
+insert(btree, 14)
+print("-------------------------------------------------------")
+print_btree(btree.root)
+insert(btree, 105)
+print("-------------------------------------------------------")
+print_btree(btree.root)
+var = search(btree, 25)
+
+print(var[0].keys)
+print(var[1]) 
