@@ -85,55 +85,31 @@ def search(trie : Trie ,word : str) :
 
 """------------------------------------------------------------------------------------------------"""
 
-def delete(trie : Trie , word : str):
+def delete(trie: Trie, word: str):
+    current = trie.root
 
-     #Checkear si es parte de otra palabra
-     
-     current : TrieNode = trie.root
-     flag = False
-     counter = 0
+    # Buscar la palabra
+    for char in word:
+        found = False
+        for child in current.children:
+            if child.key == char:
+                current = child
+                found = True
+                break
+        if not found:
+            # La palabra no existe
+            return False
 
-     for i in range (0, len(word)):
+    # La palabra existe: marcar fin de palabra
+    current.isEndOfWord = False
 
-          flag = False
+    # Eliminar nodos hacia arriba si son hojas y no fin de otra palabra
+    while current.parent and not current.isEndOfWord and len(current.children) == 0:
+        parent = current.parent
+        parent.children.remove(current)
+        current = parent
 
-          for j in range(0, len(current.children)):
-                    
-               if word[i] == current.children[j].key:
-                          
-                    current = current.children[j]
-                    counter += 1
-
-                    if counter == len(word):
-                         flag = True 
-                    break
-
-          if flag: 
-               break
-
-     if flag :
-
-          if current.children : 
-
-               current.isEndOfWord = False
-
-          else : 
-
-               current.isEndOfWord = False
-
-               aux_flag = False
-
-               while len(current.parent.children) == 1:
-
-                  if current.parent.isEndOfWord : 
-                        current.parent.children.remove(current)
-                        aux_flag = True
-                        break
-                  
-                  current = current.parent
-                  
-               if not aux_flag: 
-                    current.parent.children.remove(current)
+    return True
 
 """------------------------------------------------------------------------------------------------"""
 
@@ -157,7 +133,7 @@ def print_trie(node: TrieNode, prefix="", is_last=True):
         is_child_last = (i == len(node.children) - 1)
         print_trie(child, new_prefix, is_child_last)
 
-print_trie(trie.root)
+"""print_trie(trie.root)
 insert(trie, "alas")
 insert(trie, "amor")
 insert(trie, "alto")
@@ -204,4 +180,4 @@ delete(trie, "perro")
 print_trie(trie.root)
 
 print("\n=== Estado final ===")
-print_trie(trie.root)
+print_trie(trie.root)"""
