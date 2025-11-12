@@ -55,7 +55,7 @@ class client :
         print("Desconectado del servidor")
         
 if __name__ == '__main__' : 
-    HOST = '192.168.100.68'
+    HOST = '192.168.100.121'
     user = input("Ingresa tu nombre de usuario: ")
     client = client(user, HOST)
     client.connect()    
