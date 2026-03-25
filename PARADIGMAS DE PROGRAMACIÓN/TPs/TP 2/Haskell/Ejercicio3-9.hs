@@ -74,11 +74,18 @@ clasifTriang (Triangulo l1 l2 l3)
  | otherwise = "Escaleno"
 clasifTriang _ = "No es triangulo"
 
+area :: Figura -> Maybe Float
+area (Circulo radio)
+ | radio > 0 = Just (pi * (radio^2))
+ | otherwise = Nothing
 
+area (Rectangulo l1 l2)
+ |l1 > 0 && l2 > 2 = Just (l1 * l2)
+ |otherwise = Nothing
 
-
-
-
+area (Cuadrado l)
+ |l > 0 = Just (l^2)
+ |otherwise = Nothing
 
 
 
