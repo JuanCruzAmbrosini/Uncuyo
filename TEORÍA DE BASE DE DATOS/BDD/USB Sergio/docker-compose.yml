@@ -1,0 +1,63 @@
+services:
+  postgres:
+    image: postgres:18
+    container_name: postgres
+    networks:
+      - unisys_net
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: adminadmin
+      POSTGRES_DB: psqlunisys
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:/var/lib/postgresql   # crea la carpeta postgres-data en tu proyecto
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    networks:
+      - unisys_net
+    environment:
+      PGADMIN_DEFAULT_EMAIL: root@postgresql.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8888:80"
+    volumes:
+      - ./data/pgadmin:/var/lib/pgadmin
+    depends_on:
+      - postgres
+  
+# Base de Datos MariaDB
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb
+    networks:
+      - unisys_net
+    environment:
+      MARIADB_ROOT_PASSWORD: admin
+      MARIADB_DATABASE: mdbunisys
+      MARIADB_USER: root
+      MARIADB_PASSWORD: adminadmin
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data/mariadb:/var/lib/mysql
+
+# Administrador Universal (Postgres + MariaDB)
+  cloudbeaver:
+    image: dbeaver/cloudbeaver:latest
+    container_name: cloudbeaver
+    networks:
+      - unisys_net
+    ports:
+      - "8978:8978"
+    volumes:
+      - ./data/cloudbeaver:/opt/cloudbeaver/workspace
+    depends_on:
+      - postgres
+      - mariadb
+  
+networks:
+  unisys_net:
+    driver: bridge

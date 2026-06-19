@@ -1,0 +1,8 @@
+[{
+  "IndexName": "HighScoreIndex",
+  "KeySchema": [
+    {"AttributeName": "Username", "KeyType": "HASH"},
+    {"AttributeName": "HighScore", "KeyType": "RANGE"}
+  ],
+  "Projection": {"ProjectionType": "ALL"}
+}]

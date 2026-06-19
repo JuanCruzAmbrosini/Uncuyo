@@ -1,0 +1,12 @@
+# Ignorar carpetas de datos de Docker
+TEORÍA DE BASE DE DATOS/BDD/DockerDB/data/
+TEORÍA DE BASE DE DATOS/DockerTBD/data/
+
+# Ignorar binarios, instaladores y archivos compilados
+*.deb
+*.jar
+TEORÍA DE BASE DE DATOS/BDD/target/
+
+# Ignorar dumps de bases de datos y datasets pesados
+*.sql
+*.csv

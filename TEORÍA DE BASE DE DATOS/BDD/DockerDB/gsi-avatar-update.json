@@ -1,0 +1,10 @@
+[{
+  "Create": {
+    "IndexName": "AvatarIndex",
+    "KeySchema": [
+      {"AttributeName": "Avatar", "KeyType": "HASH"}
+    ],
+    "Projection": {"ProjectionType": "ALL"},
+    "ProvisionedThroughput": {"ReadCapacityUnits": 1, "WriteCapacityUnits": 1}
+  }
+}]

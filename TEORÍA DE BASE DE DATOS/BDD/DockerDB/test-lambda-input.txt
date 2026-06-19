@@ -1,0 +1,9 @@
+{
+  "Records": [
+    {
+      "kinesis": {
+        "data": "eyJzZW5zb3JfaWQiOiJzZW5zb3ItMSIsInRlbXBlcmF0dXJlIjo5OS45LCJjdXJyZW50X3RpbWUiOjEyMzQ1Njc4OX0="
+      }
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "TableName": "SensorData",
+  "AttributeDefinitions": [
+    {"AttributeName": "sensor_id", "AttributeType": "S"},
+    {"AttributeName": "current_time", "AttributeType": "N"}
+  ],
+  "KeySchema": [
+    {"AttributeName": "sensor_id", "KeyType": "HASH"},
+    {"AttributeName": "current_time", "KeyType": "RANGE"}
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 1,
+    "WriteCapacityUnits": 1
+  }
+}

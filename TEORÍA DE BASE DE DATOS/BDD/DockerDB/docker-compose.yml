@@ -1,0 +1,142 @@
+services:
+  postgres:
+    image: postgres:18
+    container_name: postgres
+    networks:
+      - unisys_net
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: adminadmin
+      POSTGRES_DB: psqlunisys
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:/var/lib/postgresql   # crea la carpeta postgres-data en tu proyecto
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    networks:
+      - unisys_net
+    environment:
+      PGADMIN_DEFAULT_EMAIL: root@postgresql.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8888:80"
+    volumes:
+      - ./data/pgadmin:/var/lib/pgadmin
+    depends_on:
+      - postgres
+  
+# Base de Datos MariaDB
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb
+    networks:
+      - unisys_net
+    environment:
+      MARIADB_ROOT_PASSWORD: adminadmin  # Esta será tu contraseña de root
+      MARIADB_DATABASE: mdbunisys
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data/mariadb:/var/lib/mysql
+
+# Base de Datos MongoDB
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    networks:
+      - unisys_net
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: adminadmin
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data/mongodb:/data/db
+
+  localstack:
+    image: localstack/localstack:3.4
+    container_name: localstack_dynamodb
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=dynamodb,kinesis,lambda,s3,iam
+      - DEBUG=0
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - LAMBDA_EXECUTOR=local
+      - PERSISTENCE=0
+      - EAGER_SERVICE_LOADING=1
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    restart: unless-stopped
+
+# Administrador Web para MongoDB
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo-express
+    networks:
+      - unisys_net
+    ports:
+      - "8081:8081"
+    environment:
+      # Cadena de conexión interna para que hable con el contenedor "mongodb"
+      ME_CONFIG_MONGODB_URL: "mongodb://root:adminadmin@mongodb:27017/"
+      # Credenciales para entrar a la página web de Mongo Express
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: admin
+    depends_on:
+      - mongodb
+
+# Base de Datos Orientada a Grafos Neo4j
+  neo4j:
+    image: neo4j:latest
+    container_name: neo4j
+    networks:
+      - unisys_net
+    environment:
+      # El usuario por defecto en Neo4j es siempre 'neo4j'
+      NEO4J_AUTH: neo4j/adminadmin
+    ports:
+      - "7474:7474" # Puerto para la interfaz web (Neo4j Browser)
+      - "7687:7687" # Puerto Bolt para conexiones de la aplicación
+    volumes:
+      - ./data/neo4j/data:/data
+      - ./data/neo4j/logs:/logs
+      - ./data/neo4j/import:/var/lib/neo4j/import
+      - ./data/neo4j/plugins:/plugins
+      
+  redis:
+    image: redis:7
+    container_name: redis-standalone
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+
+# Administrador Universal (Postgres + MariaDB + MongoDB + Neo4j)
+  cloudbeaver:
+    image: dbeaver/cloudbeaver:latest
+    container_name: cloudbeaver
+    networks:
+      - unisys_net
+    ports:
+      - "8978:8978"
+    volumes:
+      - ./data/cloudbeaver:/opt/cloudbeaver/workspace
+    depends_on:
+      - postgres
+      - mariadb
+      - mongodb
+      - neo4j
+
+volumes:
+  redis_data:
+
+networks:
+  unisys_net:
+    driver: bridge
