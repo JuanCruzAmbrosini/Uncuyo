@@ -1,0 +1,13 @@
+{
+  "Records": [
+    {
+      "kinesis": {
+        "data": "eyJzZW5zb3JfaWQiOiJzZW5zb3ItMSIsInRlbXBlcmF0dXJlIjo5OS45LCJjdXJyZW50X3RpbWUiOjEyMzQ1Njc4OX0=",
+        "partitionKey": "sensor-data",
+        "sequenceNumber": "49590338271490256608559692538361571095921575989136588898"
+      },
+      "eventSource": "aws:kinesis",
+      "eventVersion": "1.0"
+    }
+  ]
+}
