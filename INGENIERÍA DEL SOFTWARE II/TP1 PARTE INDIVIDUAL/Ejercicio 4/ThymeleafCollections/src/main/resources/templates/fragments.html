@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<!-- ==========================================
+     1. FRAGMENTO DEL HEAD (Estilos globales)
+     ========================================== -->
+<head th:fragment="head(titulo)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${titulo}">Jota Admin</title>
+
+    <!-- Fuente Premium -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- VARIABLES GLOBALES --- */
+        :root {
+            --bg-color: #f4f6f9;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --success: #10b981;
+            --card-bg: #ffffff;
+            --border-light: rgba(226, 232, 240, 0.8);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            background-image:
+                    radial-gradient(at 0% 0%, hsla(253,16%,7%,0.03) 0, transparent 50%),
+                    radial-gradient(at 100% 100%, hsla(225,39%,30%,0.03) 0, transparent 50%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- HEADER PREMIUM --- */
+        .site-header {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-light);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-group { display: flex; align-items: center; gap: 16px; }
+
+        .brand-logo {
+            font-size: 1.5rem; font-weight: 800; letter-spacing: -1px;
+            background: linear-gradient(135deg, var(--primary) 0%, #a855f7 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .brand-subtitle {
+            font-size: 0.85rem; font-weight: 600; color: var(--text-muted);
+            border-left: 2px solid #e2e8f0; padding-left: 16px; text-transform: uppercase;
+        }
+
+        .main-nav { display: flex; gap: 8px; }
+        .main-nav a {
+            text-decoration: none; color: var(--text-muted); font-size: 0.95rem; font-weight: 600;
+            padding: 8px 16px; border-radius: 20px; transition: all 0.2s ease;
+        }
+        .main-nav a:hover { background-color: #eef2ff; color: var(--primary); }
+
+        /* --- ESTILOS: PÁGINA DE INICIO (HERO) --- */
+        .hero-section {
+            flex: 1; display: flex; flex-direction: column; align-items: center;
+            justify-content: center; padding: 80px 20px; text-align: center;
+            animation: fadeUp 0.8s ease forwards;
+        }
+        .hero-section h1 {
+            font-size: 3.5rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 24px;
+            background: linear-gradient(135deg, #0f172a 0%, #475569 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.2;
+        }
+        .features-grid { display: flex; gap: 24px; margin-bottom: 50px; max-width: 800px; flex-wrap: wrap; justify-content: center; }
+        .feature-card {
+            background: var(--card-bg); padding: 32px; border-radius: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); flex: 1; min-width: 280px; text-align: left;
+            transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid rgba(226, 232, 240, 0.6);
+        }
+        .feature-card:hover { transform: translateY(-6px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+        .feature-icon { font-size: 24px; background: #eef2ff; color: var(--primary); width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 14px; margin-bottom: 20px; }
+        .feature-card p { color: var(--text-muted); font-size: 1.05rem; line-height: 1.6; }
+        .feature-card strong { color: var(--text-main); }
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 12px;
+            background: linear-gradient(135deg, var(--primary) 0%, #4f46e5 100%);
+            color: white; text-decoration: none; padding: 16px 40px; border-radius: 50px;
+            font-weight: 600; font-size: 1.1rem; box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.5); }
+        .btn-primary svg { transition: transform 0.3s ease; }
+        .btn-primary:hover svg { transform: translateX(5px); }
+
+        /* --- ESTILOS: TABLA DE PRODUCTOS --- */
+        .page-wrapper { max-width: 1000px; margin: 40px auto; padding: 0 20px; width: 100%; flex: 1; }
+        .page-header h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 8px; }
+        .page-header p { color: var(--text-muted); margin-bottom: 40px; font-weight: 500; }
+        table { width: 100%; border-collapse: separate; border-spacing: 0 16px; text-align: left; }
+        thead th { padding: 0 24px 8px 24px; color: var(--text-muted); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+        tbody tr {
+            background-color: var(--card-bg); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            border-radius: 16px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.6s ease forwards; transition: all 0.3s ease;
+        }
+        tbody tr:hover { transform: translateY(-4px) scale(1.005); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); cursor: pointer; }
+        tbody td { padding: 24px; color: #334155; font-size: 1rem; font-weight: 500; border: none;}
+        tbody td:first-child { border-top-left-radius: 16px; border-bottom-left-radius: 16px; position: relative;}
+        tbody td:last-child { border-top-right-radius: 16px; border-bottom-right-radius: 16px; }
+        tbody td:first-child::before {
+            content: ''; position: absolute; left: 0; top: 10%; height: 80%; width: 4px;
+            background: linear-gradient(to bottom, var(--primary), #a855f7); border-radius: 0 4px 4px 0; opacity: 0; transition: opacity 0.3s ease;
+        }
+        tbody tr:hover td:first-child::before { opacity: 1; }
+        .col-id { color: var(--text-muted); font-family: 'Courier New', monospace; font-size: 0.9rem; font-weight: 600; }
+        .col-nombre { font-weight: 700; color: var(--text-main); }
+        .marca-badge { background-color: #eef2ff; color: var(--primary); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: inline-block; }
+        .col-precio { font-weight: 700; font-size: 1.1rem; color: var(--success); text-align: right; }
+        .currency-symbol { font-size: 0.9rem; color: #94a3b8; margin-right: 2px; }
+
+        /* --- FOOTER --- */
+        .site-footer {
+            margin-top: auto; width: 100%; padding: 32px 20px; text-align: center; border-top: 1px solid #e2e8f0;
+        }
+        .site-footer p { color: #94a3b8; font-size: 0.9rem; font-weight: 500; }
+
+        /* --- ANIMACIONES --- */
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+
+<body>
+<!-- ==========================================
+     2. FRAGMENTO DEL HEADER
+     ========================================== -->
+<header th:fragment="header" class="site-header">
+    <div class="header-container">
+        <div class="brand-group">
+            <h2 class="brand-logo">Jota</h2>
+            <h1 class="brand-subtitle">Admin 1.0</h1>
+        </div>
+        <nav class="main-nav">
+            <a th:href="@{/}">Inicio</a>
+            <a th:href="@{/productos}">Ver productos</a>
+        </nav>
+    </div>
+</header>
+
+<!-- ==========================================
+     3. FRAGMENTO DEL FOOTER
+     ========================================== -->
+<footer th:fragment="footer" class="site-footer">
+    <div>
+        <p>&copy; 2026 Jota. Todos los derechos reservados.</p>
+    </div>
+</footer>
+</body>
+</html>

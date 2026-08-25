@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado</title>
+    <style>
+        /* Reseteo básico */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Estilo para el fondo de la página (Mismo que el formulario) */
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+            padding: 20px;
+        }
+
+        /* Contenedor principal de los resultados */
+        .result-container {
+            background-color: #ffffff;
+            padding: 40px 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px; /* Un poco más ancho para que la tabla respire */
+        }
+
+        /* Título */
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        /* Estilos de la Tabla */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            overflow: hidden; /* Necesario para que los bordes redondeados se apliquen a la cabecera */
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+
+        /* Cabecera de la tabla */
+        th {
+            background-color: #3498db; /* Azul que hace juego con el botón del formulario */
+            color: #ffffff;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Celdas de datos */
+        td {
+            border-bottom: 1px solid #eeeeee;
+            color: #555;
+            font-size: 15px;
+        }
+
+        /* Efecto cebra para las filas (por si agregas más de una en el futuro) */
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* Efecto al pasar el ratón por la fila */
+        tr:hover td {
+            background-color: #f1f7fa;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Estilo para el mensaje de texto (tipoEdad) */
+        .message-box {
+            background-color: #e8f4fd;
+            color: #2980b9;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 500;
+            border-left: 5px solid #3498db;
+            margin-bottom: 25px;
+        }
+
+        /* Botón de volver (Opcional, pero mejora la experiencia del usuario) */
+        .btn-back {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 14px;
+            background-color: #ecf0f1;
+            color: #2c3e50;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        .btn-back:hover {
+            background-color: #bdc3c7;
+        }
+
+        .btn-back:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+<div class="result-container">
+    <h2>Datos Procesados</h2>
+
+    <!-- Agregué <thead> y <tbody> por semántica y buenas prácticas -->
+    <table>
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th> <!-- Corregido: Antes decía Edad de nuevo -->
+            <th>Edad</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${persona.nombre}"></td>
+            <td th:text="${persona.apellido}"></td>
+            <td th:text="${persona.edad}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Convertí el párrafo en una "caja de mensaje" llamativa -->
+    <p class="message-box" th:text="${tipoEdad}"></p>
+
+    <!-- Botón para regresar al formulario (Ajusta el th:href según tu ruta) -->
+    <a href="/" class="btn-back">Volver al Formulario</a>
+</div>
+</body>
+</html>
