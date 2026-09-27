@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Ingresar')}"></head>
+<body>
+<div class="container" style="max-width:420px; margin-top:8vh;">
+    <div class="card p-4">
+        <h3 class="mb-3 text-center">Ingresar</h3>
+        <p class="text-success" th:if="${param.registroExitoso}">Cuenta creada. Ya podes iniciar sesion.</p>
+        <p class="text-danger" th:if="${param.error}">Correo o contrasena incorrectos.</p>
+        <p class="text-muted" th:if="${param.logout}">Sesion finalizada.</p>
+        <form th:action="@{/login}" method="post">
+            <div class="mb-3">
+                <label class="form-label">Correo</label>
+                <input type="email" name="email" class="form-control" required autofocus/>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Contrasena</label>
+                <input type="password" name="password" class="form-control" required/>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+        </form>
+        <div class="text-center mt-3">
+            <a th:href="@{/registro}">Registrarme como docente</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

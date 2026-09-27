@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Alumnos')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Alumnos</h3>
+        <a th:href="@{/alumnos/nuevo}" class="btn btn-primary">Nuevo alumno</a>
+    </div>
+    <div class="card p-3">
+        <table class="table table-hover align-middle">
+            <thead><tr><th>Nombre</th><th>Apellido</th><th>Sexo</th><th>Grado</th><th></th></tr></thead>
+            <tbody>
+            <tr th:each="a : ${alumnos}">
+                <td th:text="${a.nombre}"></td>
+                <td th:text="${a.apellido}"></td>
+                <td th:text="${a.sexo}"></td>
+                <td th:text="${a.gradoNombre} ?: '-'"></td>
+                <td class="text-end">
+                    <a th:href="@{'/alumnos/' + ${a.id} + '/editar'}" class="btn btn-sm btn-outline-secondary">Editar</a>
+                    <form th:action="@{'/alumnos/' + ${a.id} + '/eliminar'}" method="post" class="d-inline">
+                        <button class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Eliminar alumno?')">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

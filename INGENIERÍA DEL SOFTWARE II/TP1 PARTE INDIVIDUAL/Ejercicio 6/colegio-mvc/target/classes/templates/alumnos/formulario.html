@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Alumno')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div class="container" style="max-width:560px;">
+    <div class="card p-4">
+        <h3 class="mb-3">Datos del alumno</h3>
+        <form th:action="@{/alumnos/guardar}" th:object="${alumnoDTO}" method="post">
+            <input type="hidden" th:field="*{id}"/>
+            <div class="mb-3">
+                <label class="form-label">Nombre</label>
+                <input type="text" th:field="*{nombre}" class="form-control"/>
+                <small class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Apellido</label>
+                <input type="text" th:field="*{apellido}" class="form-control"/>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Sexo</label>
+                <select th:field="*{sexo}" class="form-select">
+                    <option th:each="s : ${sexos}" th:value="${s}" th:text="${s}"></option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Fecha de nacimiento</label>
+                <input type="date" th:field="*{fechaNacimiento}" class="form-control"/>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Grado</label>
+                <select th:field="*{gradoId}" class="form-select">
+                    <option value="">-- Sin asignar --</option>
+                    <option th:each="g : ${grados}" th:value="${g.id}" th:text="${g.nombre}"></option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a th:href="@{/alumnos}" class="btn btn-link">Cancelar</a>
+        </form>
+    </div>
+</div>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

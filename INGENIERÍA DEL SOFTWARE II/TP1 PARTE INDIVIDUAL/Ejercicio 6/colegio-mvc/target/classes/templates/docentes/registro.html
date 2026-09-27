@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Registro de docente')}"></head>
+<body>
+<div class="container" style="max-width:520px; margin-top:5vh;">
+    <div class="card p-4">
+        <h3 class="mb-3">Registro de docente</h3>
+        <p class="text-danger" th:if="${errorNegocio}" th:text="${errorNegocio}"></p>
+
+        <!--
+          Requisito: "los docentes se registran con Nombre, Apellido, Sexo y
+          Fecha de Nacimiento. El usuario es el correo personal del docente".
+          Al enviar, DocenteService hashea la contrasena y envia el mail de
+          bienvenida (ver DocenteServiceImpl.registrar).
+        -->
+        <form th:action="@{/registro}" th:object="${docenteRegistroDTO}" method="post">
+            <div class="mb-3">
+                <label class="form-label">Nombre</label>
+                <input type="text" th:field="*{nombre}" class="form-control"/>
+                <small class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Apellido</label>
+                <input type="text" th:field="*{apellido}" class="form-control"/>
+                <small class="text-danger" th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></small>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Sexo</label>
+                <select th:field="*{sexo}" class="form-select">
+                    <option value="MASCULINO">Masculino</option>
+                    <option value="FEMENINO">Femenino</option>
+                    <option value="OTRO">Otro</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Fecha de nacimiento</label>
+                <input type="date" th:field="*{fechaNacimiento}" class="form-control"/>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Correo personal (sera tu usuario)</label>
+                <input type="email" th:field="*{email}" class="form-control"/>
+                <small class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Contrasena</label>
+                <input type="password" th:field="*{password}" class="form-control"/>
+                <small class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Departamento (opcional)</label>
+                <select th:field="*{departamentoId}" class="form-select">
+                    <option value="">-- Sin asignar --</option>
+                    <option th:each="d : ${departamentos}" th:value="${d.id}" th:text="${d.nombre}"></option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Registrarme</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

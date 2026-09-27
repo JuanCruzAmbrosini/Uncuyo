@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Aula')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div class="container" style="max-width:560px;">
+    <div class="card p-4">
+        <h3 class="mb-3">Datos del aula</h3>
+        <form th:action="@{/aulas/guardar}" th:object="${aulaDTO}" method="post">
+            <input type="hidden" th:field="*{id}"/>
+            <div class="mb-3">
+                <label class="form-label">Nombre</label>
+                <input type="text" th:field="*{nombre}" class="form-control"/>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Capacidad</label>
+                <input type="number" th:field="*{capacidad}" class="form-control"/>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Colegio</label>
+                <select th:field="*{colegioId}" class="form-select">
+                    <option th:each="c : ${colegios}" th:value="${c.id}" th:text="${c.nombre}"></option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a th:href="@{/aulas}" class="btn btn-link">Cancelar</a>
+        </form>
+    </div>
+</div>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Notas')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Notas</h3>
+        <a th:href="@{/notas/nuevo}" class="btn btn-primary">Nueva nota</a>
+    </div>
+    <div class="card p-3">
+        <table class="table table-hover align-middle">
+            <thead><tr><th>Alumno</th><th>Materia</th><th>Nota</th><th>Fecha</th><th>Periodo</th><th></th></tr></thead>
+            <tbody>
+            <tr th:each="n : ${notas}">
+                <td th:text="${n.alumnoNombreCompleto}"></td>
+                <td th:text="${n.materiaNombre}"></td>
+                <td th:text="${n.valor}"></td>
+                <td th:text="${n.fecha}"></td>
+                <td th:text="${n.periodo}"></td>
+                <td class="text-end">
+                    <a th:href="@{'/notas/' + ${n.id} + '/editar'}" class="btn btn-sm btn-outline-secondary">Editar</a>
+                    <form th:action="@{'/notas/' + ${n.id} + '/eliminar'}" method="post" class="d-inline">
+                        <button class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Eliminar nota?')">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>
