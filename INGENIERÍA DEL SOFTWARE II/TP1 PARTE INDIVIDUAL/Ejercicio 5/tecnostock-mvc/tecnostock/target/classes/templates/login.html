@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Login')}"></head>
+<body>
+<div class="login-wrap d-flex align-items-center justify-content-center">
+    <div class="card shadow-lg" style="width: 380px; border:none; border-radius:.8rem;">
+        <div class="card-body p-4">
+            <div class="text-center mb-4">
+                <i class="bi bi-cpu" style="font-size:2rem; color:#152238;"></i>
+                <h4 class="mt-2 mb-0">TecnoStock</h4>
+                <small class="text-muted">Gestion de stock y compras</small>
+            </div>
+
+            <!-- Mensajes que agrega Spring Security segun el parametro de la URL -->
+            <div class="alert alert-danger py-2" th:if="${param.error}">
+                Usuario o contraseña incorrectos.
+            </div>
+            <div class="alert alert-success py-2" th:if="${param.logout}">
+                Sesion cerrada correctamente.
+            </div>
+
+            <!--
+                th:action apunta a "/login": Spring Security intercepta este
+                POST (configurado en SecurityConfig.loginProcessingUrl) y NO
+                pasa por ningun @Controller nuestro. Los names "username" y
+                "password" son los esperados por defecto por el framework.
+            -->
+            <form th:action="@{/login}" method="post">
+                <div class="mb-3">
+                    <label class="form-label">Usuario</label>
+                    <input type="text" name="username" class="form-control" required autofocus>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Contraseña</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-accent w-100">Ingresar</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

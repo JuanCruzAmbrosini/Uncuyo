@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<!-- Inyectamos el HEAD pasándole el título de esta pestaña -->
+<head th:replace="~{fragments :: head('Inicio | Jota Admin')}"></head>
+
+<body>
+
+<!-- Inyectamos el menú de navegación -->
+<header th:replace="~{fragments :: header}"></header>
+
+<!-- Contenido principal (Hero) -->
+<main class="hero-section">
+    <h1>Bienvenido al sistema</h1>
+
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <p>Esta aplicación permite visualizar un <strong>listado dinámico de productos</strong> utilizando el motor de plantillas Thymeleaf con renderizado instantáneo.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">🧩</div>
+            <p>Reutiliza <strong>fragmentos de HTML</strong> para el header y footer, asegurando una arquitectura limpia y consistencia visual en todas las pantallas.</p>
+        </div>
+    </div>
+
+    <a th:href="@{/productos}" class="btn-primary">
+        Ver todos los productos
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+    </a>
+</main>
+
+<!-- Inyectamos el pie de página -->
+<footer th:replace="~{fragments :: footer}"></footer>
+
+</body>
+</html>

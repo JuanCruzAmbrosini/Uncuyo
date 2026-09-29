@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<!-- Inyectamos el HEAD pasándole el título para el inventario -->
+<head th:replace="~{fragments :: head('Inventario | Jota Admin')}"></head>
+
+<body>
+
+<!-- Inyectamos el menú de navegación -->
+<header th:replace="~{fragments :: header}"></header>
+
+<!-- Contenedor principal de la tabla -->
+<main class="page-wrapper">
+    <div class="page-header">
+        <h1>Inventario</h1>
+        <p>Gestión de productos y precios actualizados</p>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Ref ID</th>
+            <th>Producto</th>
+            <th>Fabricante</th>
+            <th style="text-align: right;">Valor Unitario</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Iteración con Thymeleaf animada -->
+        <tr th:each="producto, iterStat : ${productos}"
+            th:style="'animation-delay: ' + ${iterStat.index * 0.1} + 's'">
+
+            <td class="col-id" th:text="'#' + ${producto.id}"></td>
+            <td class="col-nombre" th:text="${producto.nombre}"></td>
+            <td>
+                <span class="marca-badge" th:text="${producto.marca}"></span>
+            </td>
+            <td class="col-precio">
+                <span class="currency-symbol">$</span>
+                <span th:text="${producto.precio}"></span>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+<!-- Inyectamos el pie de página -->
+<footer th:replace="~{fragments :: footer}"></footer>
+
+</body>
+</html>
